@@ -14,15 +14,54 @@
         <a-entity 
           cursor="fuse: true; fuseTimeOut: 1000"
           geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02;" 
-          material="color: red; shader: flat;"
+          material="color: #e6ffff; shader: flat;"
           position="0 0 -1"></a-entity>
       </a-entity>
       
       <!-- Sky -->
-      <a-sky color="#865d3e"></a-sky>
+      <a-sky color="#5832a8"></a-sky>
       
-
-      
+      <a-entity id="game-container" position="0 0 -6">
+        <a-box
+          class="item" 
+          position="0 0 0"
+          height="0.8" 
+          width="0.8"
+          color="#333"
+          rotation="0 180 0">
+          <a-image 
+            src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/card-html.png?v=1728810427384" 
+            position="0 0 0.53" 
+            width="0.5" 
+            height="0.5" 
+            rotation="0 0 0">
+          </a-image>
+        </a-box>
+        
+      </a-entity>
     </a-scene>
   </body>
+  
+  <script>
+    document.querySelectorAll("a-box.item").forEach(item=>{
+      item.addEventListener("mouseenter", ()=>{
+        item.setAttribute('animation', {
+          property: 'rotation',
+          to: '0 0 0',
+          dur: 1000,
+          easing: 'easeInOutQuad'
+        });
+      });
+      
+      item.addEventListener("mouseleave", () => {
+        item.setAttribute('animation', {
+            property: 'rotation',
+            to: '0 180 0',
+            dur: 1000,
+            easing: 'easeInOutQuad'
+        });
+      });
+    });
+    
+  </script>
 </html>
