@@ -15,7 +15,8 @@
           cursor="fuse: true; fuseTimeOut: 2000"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;" 
           material="color: #e6ffff; shader: flat;"
-          position="0 0 -1"></a-entity>
+          position="0 0 -1"
+          raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
       
       <!-- Sky -->
@@ -43,7 +44,8 @@
             position="0 0 0"
             width="0.5"
             height="0.5"
-            color="#23d929">
+            color="#23d929"
+            class="raycastable">
           </a-box>
         
           <a-box
@@ -93,7 +95,6 @@
         title.setAttribute("visible", "false");
         initialInterface.parentNode.removeChild(initialInterface);
         criarBoxes();
-        addEventoMouse();
       }, 1300);
     });
     
@@ -161,6 +162,23 @@
           clearInterval(intervalPreencher);
         }
       }, 150);
+      
+      setTimeout(()=>{
+        for(item of items){
+          item.setAttribute("animation", {
+            property: "rotation",
+            to: "0 180 0",
+            dur: 500
+          });
+          
+        }
+        
+        setTimeout(()=>{
+          addEventoMouse();
+        }, 1000);
+        
+      }, 3000);
+      
       
     }
     
