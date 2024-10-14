@@ -39,29 +39,23 @@
         </a-text>
         
         <a-entity position="1 0 0">
-          <a-box
+          <a-cylinder
             id="gameButton"
-            position="0 0 0"
-            width="0.5"
-            height="0.5"
+            position="0.5 0 0"
+            radius="0.5"
+            height="1"
             color="#23d929"
-            class="raycastable">
-          </a-box>
+            class="raycastable"
+            rotation="90 0 0">
+          </a-cylinder>
         
-          <a-box
-            id="blueButton"
-            position="0.7 0 0"
-            width="0.5"
-            height="0.5"
-            color="tomato">
-          </a-box>
         </a-entity>
         
       </a-plane>
       
       <a-plane
         id="blackboard"
-        color="#eee"
+        color="#000"
         width="10"
         height="9"
         position="-11 0 -22">
@@ -75,8 +69,7 @@
     const gameContainer = document.querySelector("#game-container");
     const initialInterface = document.querySelector("a-plane#initialInterface");
     const title = document.querySelector("a-text#title");
-    const gameButton = document.querySelector("a-box#gameButton");
-    const blueButton = document.querySelector("a-box#blueButton");
+    const gameButton = document.querySelector("a-cylinder#gameButton");
     const blackboard = document.querySelector("a-plane#blackboard");
     let cardBefore;
     
@@ -116,7 +109,7 @@
     
     gameButton.addEventListener("mouseenter", ()=>{
       gameButton.setAttribute("visible", "false");
-      blueButton.setAttribute("visible", "false");
+      // blueButton.setAttribute("visible", "false");
       
       initialInterface.setAttribute("animation", {
         property: "material.opacity",
@@ -265,7 +258,26 @@
     }
     
     function writeBlackboard(card){
+      const cardSrc = card.querySelector("a-image").getAttribute("src");
       
+      for(let {src, title, definition} of cardsDefinitions){
+        if(cardSrc == src){
+          const aTitle = document.createElement("a-text");
+          aTitle.setAttribute("value", `${title}`);
+          aTitle.setAttribute("position", "-0.5 3 1");
+          aTitle.setAttribute("color", "#000");
+          aTitle.setAttribute("scale", "3.5 3.5 1");
+          
+          const aDefinition = document.createElement("a-text");
+          aDefinition.setAttribute("color", "#000");
+          aDefinition.setAttribute("position", "-3 0 1");
+          aDefinition.setAttribute("scale", "1.5 1.5 1");
+          aDefinition.setAttribute("value", `${definition}`);
+          
+          blackboard.appendChild(aTitle);
+          blackboard.appendChild(aDefinition);
+        }
+      }
     }
 
     function addStyle(elems){
