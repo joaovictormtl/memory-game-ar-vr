@@ -27,7 +27,7 @@
         position="0 0 -10"
         width="6"
         height="3"
-        color="#eee">
+        color="#fff0c7">
         
         <a-text
           id="title"
@@ -44,7 +44,7 @@
             position="1.2 -0.8 0"
             radius="0.3"
             height="0.5"
-            color="#97fcc4"
+            color="#ccc09f"
             class="raycastable"
             rotation="90 0 0">
           </a-cylinder>
@@ -67,6 +67,13 @@
         width="10"
         height="9"
         position="-11 0 -22">
+        
+        <a-image
+          src="img/brain-icon.png"
+          width="4"
+          height="4"
+          position="0.3 0 1">
+        </a-image>
       </a-plane>
       
       <a-entity id="game-container" position="0 3 -18"></a-entity>
@@ -156,7 +163,7 @@
         initialInterface.parentNode.removeChild(initialInterface);
         blackboard.setAttribute("animation", {
           property: "color",
-          to: "#eee",
+          to: "#fff0c7",
           dur: 1000
         });
         criarBoxes();
@@ -340,7 +347,20 @@
       }
       
       if(count == 12){
-        console.log("Ganhou");
+        if(!blackboard.innerHTML == ""){
+          while(blackboard.firstChild){
+            blackboard.removeChild(blackboard.firstChild);
+          }
+          blackboard.setAttribute("color", "#73fc03");
+          
+          const wonText = document.createElement("a-text");
+          wonText.setAttribute("color", "#eee");
+          wonText.setAttribute("value", "Parabens!");
+          wonText.setAttribute("scale", "5 5 1");
+          wonText.setAttribute("position", "-2 0 1");
+          
+          blackboard.appendChild(wonText);
+        }
         
       }
     }
