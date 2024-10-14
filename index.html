@@ -69,6 +69,7 @@
     const title = document.querySelector("a-text#title");
     const gameButton = document.querySelector("a-box#gameButton");
     const blueButton = document.querySelector("a-box#blueButton");
+    let cardBefore;
     
     
     gameButton.addEventListener("mouseenter", ()=>{
@@ -118,7 +119,7 @@
       
       imgs.forEach((img, index)=>{
         const aBox = document.createElement("a-box");
-        aBox.setAttribute("class", "item");
+        aBox.setAttribute("class", "item raycastable");
         aBox.setAttribute("width", "2");
         aBox.setAttribute("height", "2");
         aBox.setAttribute("color", "#c1c1c1")
@@ -183,31 +184,62 @@
     }
     
     function addEventoMouse(){
-      document.querySelectorAll("a-box.item").forEach(item=>{
-      let timeoutId;
       
+      document.querySelectorAll("a-box.item").forEach(item=>{
       // Evento de mouseenter: Faz a a-box revelar o card
       item.addEventListener("mouseenter", ()=>{
+        
+                            
         item.setAttribute("animation", {
           property: "rotation",
           to: "0 0 0",
           dur: 1000
         });
-        item.setAttribute("color", "#73fc03");
+        
+        if(!cardBefore){
+          cardBefore = item;
+          cardBefore.setAttribute("color", "tomato");
+          cardBefore.classList.remove("raycastable");
+          return;
+        } 
+        else if(cardBefore.querySelector("a-image").getAttribute("src") == item.querySelector("a-image").getAttribute("src")){
+          item.classList.remove("raycastable");
+          item.setAttribute("color", "#73fc03");
+          cardBefore.setAttribute("color", "#73fc03");
+          cardBefore = null;
+        }
+        else{
+          item.setAttribute("color", "tomato");
+          
+          setTimeout(()=>{
+            addStyle([item, cardBefore]);
+          }, 1000);
+          
+        }
         
         });
       });
+      
+      
     }
 
-      //Evento de mouseleave: Faz a a-box ocultar o card
-      // item.addEventListener("mouseleave", () => {
-      //   item.setAttribute("animation", {
-      //       property: "rotation",
-      //       to: "0 180 0",
-      //       dur: 700
-      //   });
-      //   item.setAttribute("color", "#333");
-      // });
+    function addStyle(elems){
+      for(let el of elems){
+        el.setAttribute("animation", {
+            property: "rotation",
+            to: "0 180 0",
+            dur: 700
+        });
+        
+        setTimeout(()=>{
+          el.setAttribute("color", "#c1c1c1");
+          el.classList.add("raycastable");
+          cardBefore = null;
+        }, 800 * elems.lenght);
+      }
+      
+      
+    }
     
     
     
