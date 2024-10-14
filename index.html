@@ -41,21 +41,29 @@
         <a-entity position="1 0 0">
           <a-cylinder
             id="gameButton"
-            position="0.5 0 0"
-            radius="0.5"
-            height="1"
-            color="#23d929"
+            position="1.2 -0.8 0"
+            radius="0.3"
+            height="0.5"
+            color="#97fcc4"
             class="raycastable"
             rotation="90 0 0">
           </a-cylinder>
-        
+          
+          <a-image
+              id="powerIcon"
+              src="img/power-icon.png"
+              position="0.58 -0.58 3"
+              width="0.4"
+              height="0.4"
+              rotation="0 0 0">
+            </a-image>
         </a-entity>
         
       </a-plane>
       
       <a-plane
         id="blackboard"
-        color="#000"
+        color="#320b63"
         width="10"
         height="9"
         position="-11 0 -22">
@@ -70,6 +78,7 @@
     const initialInterface = document.querySelector("a-plane#initialInterface");
     const title = document.querySelector("a-text#title");
     const gameButton = document.querySelector("a-cylinder#gameButton");
+    const powerIcon = document.querySelector("a-image#powerIcon");
     const blackboard = document.querySelector("a-plane#blackboard");
     let cardBefore;
     
@@ -103,13 +112,28 @@
         src: "img/card-java.png",
         title: "Java",
         definition: "Java é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipe de programadores chefiada por James Gosling, na empresa Sun Microsystems, que em 2008 foi adquirido pela empresa Oracle Corporation."
+      },
+      {
+        src: "img/card-js.png",
+        title: "JavaScript",
+        definition: "JavaScript é uma linguagem de programação interpretada estruturada, de script em alto nível com tipagem dinâmica fraca e multiparadigma. Juntamente com HTML e CSS, o JavaScript é uma das três principais tecnologias da World Wide Web."
+      },
+      {
+        src: "img/card-angular.png",
+        title: "Angular",
+        definition: "Angular é uma plataforma de aplicações web de código-fonte aberto e front-end baseado em TypeScript liderado pela Equipe Angular do Google e por uma comunidade de indivíduos e corporações. Angular é uma reescrita completa do AngularJS, feito pela mesma equipe que o construiu."
+      },
+      {
+        src: "img/card-css.png",
+        title: "Css",
+        definition: "Cascading Style Sheets é um mecanismo para adicionar estilos a uma página web, aplicado diretamente nas tags HTML ou ficar contido dentro das tags <style>. Também é possível, adicionar estilos adicionando um link para um arquivo CSS que contém os estilos."
       }
     ]
     
     
     gameButton.addEventListener("mouseenter", ()=>{
       gameButton.setAttribute("visible", "false");
-      // blueButton.setAttribute("visible", "false");
+      powerIcon.setAttribute("visible", "false");
       
       initialInterface.setAttribute("animation", {
         property: "material.opacity",
@@ -130,6 +154,11 @@
       setTimeout(()=>{
         title.setAttribute("visible", "false");
         initialInterface.parentNode.removeChild(initialInterface);
+        blackboard.setAttribute("animation", {
+          property: "color",
+          to: "#eee",
+          dur: 1000
+        });
         criarBoxes();
       }, 1300);
     });
@@ -138,14 +167,14 @@
       const items = [];
       
       let imgs = [
-      "img/card-html.png",
+      "img/card-js.png",
       "img/card-python.png",
-      "img/card-html.png",
+      "img/card-js.png",
       "img/card-npm.png",
-      "img/card-sql.png",
+      "img/card-angular.png",
       "img/card-npm.png",
       "img/card-react.png",
-      "img/card-sql.png",
+      "img/card-angular.png",
       "img/card-java.png",
       "img/card-python.png",
       "img/card-java.png",
@@ -258,6 +287,12 @@
     }
     
     function writeBlackboard(card){
+      if(!blackboard.innerHTML == ""){
+        while(blackboard.firstChild){
+          blackboard.removeChild(blackboard.firstChild);
+        }
+      }
+      
       const cardSrc = card.querySelector("a-image").getAttribute("src");
       
       for(let {src, title, definition} of cardsDefinitions){
@@ -270,7 +305,7 @@
           
           const aDefinition = document.createElement("a-text");
           aDefinition.setAttribute("color", "#000");
-          aDefinition.setAttribute("position", "-3 0 1");
+          aDefinition.setAttribute("position", "-3.2 0 1");
           aDefinition.setAttribute("scale", "1.5 1.5 1");
           aDefinition.setAttribute("value", `${definition}`);
           
