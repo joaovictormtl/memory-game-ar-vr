@@ -67,6 +67,13 @@
         width="10"
         height="9"
         position="-11 0 -22">
+        
+        <a-image
+          src="img/brain-icon.png"
+          width="4"
+          height="4"
+          position="0 0 1">
+        </a-image>
       </a-plane>
       
       <a-entity id="game-container" position="0 3 -18"></a-entity>
@@ -340,7 +347,20 @@
       }
       
       if(count == 12){
-        console.log("Ganhou");
+        if(!blackboard.innerHTML == ""){
+          while(blackboard.firstChild){
+            blackboard.removeChild(blackboard.firstChild);
+          }
+          blackboard.setAttribute("color", "#73fc03");
+          
+          const wonText = document.createElement("a-text");
+          wonText.setAttribute("color", "#eee");
+          wonText.setAttribute("value", "Parabens!");
+          wonText.setAttribute("scale", "5 5 1");
+          wonText.setAttribute("position", "-2 0 1");
+          
+          blackboard.appendChild(wonText);
+        }
         
       }
     }
