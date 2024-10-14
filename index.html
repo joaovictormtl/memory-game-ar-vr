@@ -15,7 +15,8 @@
           cursor="fuse: true; fuseTimeOut: 2000"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;" 
           material="color: #e6ffff; shader: flat;"
-          position="0 0 -1"></a-entity>
+          position="0 0 -1"
+          raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
       
       <!-- Sky -->
@@ -38,23 +39,26 @@
         </a-text>
         
         <a-entity position="1 0 0">
-          <a-box
+          <a-cylinder
             id="gameButton"
-            position="0 0 0"
-            width="0.5"
-            height="0.5"
-            color="#23d929">
-          </a-box>
+            position="0.5 0 0"
+            radius="0.5"
+            height="1"
+            color="#23d929"
+            class="raycastable"
+            rotation="90 0 0">
+          </a-cylinder>
         
-          <a-box
-            id="blueButton"
-            position="0.7 0 0"
-            width="0.5"
-            height="0.5"
-            color="tomato">
-          </a-box>
         </a-entity>
         
+      </a-plane>
+      
+      <a-plane
+        id="blackboard"
+        color="#000"
+        width="10"
+        height="9"
+        position="-11 0 -22">
       </a-plane>
       
       <a-entity id="game-container" position="0 3 -18"></a-entity>
@@ -65,13 +69,47 @@
     const gameContainer = document.querySelector("#game-container");
     const initialInterface = document.querySelector("a-plane#initialInterface");
     const title = document.querySelector("a-text#title");
-    const gameButton = document.querySelector("a-box#gameButton");
-    const blueButton = document.querySelector("a-box#blueButton");
+    const gameButton = document.querySelector("a-cylinder#gameButton");
+    const blackboard = document.querySelector("a-plane#blackboard");
+    let cardBefore;
+    
+    const cardsDefinitions = [
+      {
+        src: "img/card-html.png",
+        title: "Html",
+        definition: "HTML é uma linguagem de marcação utilizada na construção de páginas na Web. Documentos HTML podem ser interpretados por navegadores."
+      },
+      {
+        src: "img/card-python.png",
+        title: "Python",
+        definition: "Python é uma linguagem de programação de alto nível, interpretada de script, imperativa, orientada a objetos, funcional, de tipagem dinâmica e forte. Foi lançada por Guido van Rossum em 1991."
+      },
+      {
+        src: "img/card-npm.png",
+        title: "Npm",
+        definition: "npm é um gerenciador de pacotes para o Node.JS npm, Inc. é uma subsidiária do GitHub, que fornece hospedagem para desenvolvimento de software e controle de versão com o uso do Git."
+      },
+      {
+        src: "img/card-sql.png",
+        title: "MySQL",
+        definition: "O MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. É atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhões de instalações pelo mundo."
+      },
+      {
+        src: "img/card-react.png",
+        title: "React",
+        definition: "O React é uma biblioteca front-end JavaScript de código aberto com foco em criar interfaces de usuário em páginas web."
+      },
+      {
+        src: "img/card-java.png",
+        title: "Java",
+        definition: "Java é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipe de programadores chefiada por James Gosling, na empresa Sun Microsystems, que em 2008 foi adquirido pela empresa Oracle Corporation."
+      }
+    ]
     
     
     gameButton.addEventListener("mouseenter", ()=>{
       gameButton.setAttribute("visible", "false");
-      blueButton.setAttribute("visible", "false");
+      // blueButton.setAttribute("visible", "false");
       
       initialInterface.setAttribute("animation", {
         property: "material.opacity",
@@ -93,14 +131,15 @@
         title.setAttribute("visible", "false");
         initialInterface.parentNode.removeChild(initialInterface);
         criarBoxes();
-        addEventoMouse();
       }, 1300);
     });
     
     function criarBoxes(){
+      const items = [];
+      
       let imgs = [
       "img/card-html.png",
-      "img/card-css.png",
+      "img/card-python.png",
       "img/card-html.png",
       "img/card-npm.png",
       "img/card-sql.png",
@@ -108,20 +147,20 @@
       "img/card-react.png",
       "img/card-sql.png",
       "img/card-java.png",
-      "img/card-css.png",
+      "img/card-python.png",
       "img/card-java.png",
       "img/card-react.png"
       ].sort(function() { return 0.5 - Math.random() });
       
       imgs.forEach((img, index)=>{
         const aBox = document.createElement("a-box");
-        aBox.setAttribute("class", "item");
+        aBox.setAttribute("class", "item raycastable");
         aBox.setAttribute("width", "2");
         aBox.setAttribute("height", "2");
-        aBox.setAttribute("color", "#333")
+        aBox.setAttribute("color", "#c1c1c1")
         aBox.setAttribute("position", `${(index % 3) * 2.5 - 2.5} ${-Math.floor(index / 3) * 2.5} 0`);
-        aBox.setAttribute("rotation", "0 180 0");
-        // aBox.setAttribute("material", "opacity: 1; ");
+        aBox.setAttribute("rotation", "0 0 0");
+        aBox.setAttribute("material", "opacity: 0;");
         
         const aImage = document.createElement("a-image");
         aImage.setAttribute("src", `${img}`);
@@ -129,45 +168,146 @@
         aImage.setAttribute("height", "1.8");
         aImage.setAttribute("rotation", "0 0 0");
         aImage.setAttribute("position", "0 0 0.9");
-        // aImage.setAttribute("material", "opacity: 1;");
+        aImage.setAttribute("material", "opacity: 0;");
         
         aBox.appendChild(aImage);
-        gameContainer.appendChild(aBox);
+        items.push(aBox);
       });
       
+      for(item of items){
+        gameContainer.appendChild(item);
+      }
+      
+      let tamanho = 0;
+      let intervalPreencher = setInterval(()=>{
+        items[tamanho].setAttribute("animation", {
+          property: "material.opacity",
+          to: 1,
+          dur: 150
+        })
+        
+        items[tamanho].querySelector("a-image").setAttribute("animation", {
+          property: "material.opacity",
+          to: 1,
+          dur: 200
+        });
+        
+        tamanho++;
+        
+        if(tamanho >= items.length){
+          clearInterval(intervalPreencher);
+        }
+      }, 150);
+      
+      setTimeout(()=>{
+        for(item of items){
+          item.setAttribute("animation", {
+            property: "rotation",
+            to: "0 180 0",
+            dur: 500
+          }); 
+        }
+        addEventoMouse();
+      }, 3000);
     }
     
     function addEventoMouse(){
-      document.querySelectorAll("a-box.item").forEach(item=>{
-      let timeoutId;
+     let timeoutId; 
       
-      // Evento de mouseenter: Faz a a-box revelar o card
-      item.addEventListener("mouseenter", ()=>{
-        item.setAttribute("animation", {
-          property: "rotation",
-          to: "0 0 0",
-          dur: 1000
+      document.querySelectorAll("a-box.item").forEach(item=>{
+        // Evento de mouseenter: Faz a a-box revelar o card
+        item.addEventListener("mouseenter", ()=>{
+
+          timeoutId = setTimeout(()=>{
+            item.setAttribute("animation", {
+              property: "rotation",
+              to: "0 0 0",
+              dur: 500
+            });
+
+            if(!cardBefore){
+              cardBefore = item;
+              cardBefore.setAttribute("color", "tomato");
+              cardBefore.classList.remove("raycastable");
+              return;
+            } 
+            else if(cardBefore.querySelector("a-image").getAttribute("src") == item.querySelector("a-image").getAttribute("src")){
+              item.classList.remove("raycastable");
+              item.setAttribute("color", "#73fc03");
+              cardBefore.setAttribute("color", "#73fc03");
+              cardBefore = null;
+              writeBlackboard(item);
+              chkWin();
+            }
+            else{
+              item.setAttribute("color", "tomato");
+
+              setTimeout(()=>{
+                addStyle([item, cardBefore]);
+              }, 1000);
+
+            }
+          }, 1000);                  
         });
-        item.setAttribute("color", "#73fc03");
         
-        });
+        // Caso o cursor saia do card dentro de um intervalo de 1 segundo, o card não vira
+        item.addEventListener("mouseleave", ()=>{
+          clearTimeout(timeoutId);
+        })
       });
     }
-
-      //Evento de mouseleave: Faz a a-box ocultar o card
-      // item.addEventListener("mouseleave", () => {
-      //   item.setAttribute("animation", {
-      //       property: "rotation",
-      //       to: "0 180 0",
-      //       dur: 700
-      //   });
-      //   item.setAttribute("color", "#333");
-      // });
     
-    
-    
-    window.addEventListener("load", function(){
+    function writeBlackboard(card){
+      const cardSrc = card.querySelector("a-image").getAttribute("src");
       
-    });
+      for(let {src, title, definition} of cardsDefinitions){
+        if(cardSrc == src){
+          const aTitle = document.createElement("a-text");
+          aTitle.setAttribute("value", `${title}`);
+          aTitle.setAttribute("position", "-0.5 3 1");
+          aTitle.setAttribute("color", "#000");
+          aTitle.setAttribute("scale", "3.5 3.5 1");
+          
+          const aDefinition = document.createElement("a-text");
+          aDefinition.setAttribute("color", "#000");
+          aDefinition.setAttribute("position", "-3 0 1");
+          aDefinition.setAttribute("scale", "1.5 1.5 1");
+          aDefinition.setAttribute("value", `${definition}`);
+          
+          blackboard.appendChild(aTitle);
+          blackboard.appendChild(aDefinition);
+        }
+      }
+    }
+
+    function addStyle(elems){
+      for(let el of elems){
+        el.setAttribute("animation", {
+            property: "rotation",
+            to: "0 180 0",
+            dur: 500
+        });
+        
+        setTimeout(()=>{
+          el.setAttribute("color", "#c1c1c1");
+          el.classList.add("raycastable");
+          cardBefore = null;
+        }, 800 * elems.lenght);
+      }
+    }
+    
+    function chkWin(){
+      let count = 0;
+      const cards = document.querySelectorAll(".item");
+      
+      for(let card of cards){
+        if(card.getAttribute("color") == "#73fc03") count++;
+      }
+      
+      if(count == 12){
+        console.log("Ganhou");
+        
+      }
+    }
   </script>
 </html>
