@@ -98,6 +98,8 @@
     });
     
     function criarBoxes(){
+      const items = [];
+      
       let imgs = [
       "img/card-html.png",
       "img/card-css.png",
@@ -118,10 +120,10 @@
         aBox.setAttribute("class", "item");
         aBox.setAttribute("width", "2");
         aBox.setAttribute("height", "2");
-        aBox.setAttribute("color", "#333")
+        aBox.setAttribute("color", "#c1c1c1")
         aBox.setAttribute("position", `${(index % 3) * 2.5 - 2.5} ${-Math.floor(index / 3) * 2.5} 0`);
-        aBox.setAttribute("rotation", "0 180 0");
-        // aBox.setAttribute("material", "opacity: 1; ");
+        aBox.setAttribute("rotation", "0 0 0");
+        aBox.setAttribute("material", "opacity: 0;");
         
         const aImage = document.createElement("a-image");
         aImage.setAttribute("src", `${img}`);
@@ -129,11 +131,36 @@
         aImage.setAttribute("height", "1.8");
         aImage.setAttribute("rotation", "0 0 0");
         aImage.setAttribute("position", "0 0 0.9");
-        // aImage.setAttribute("material", "opacity: 1;");
+        aImage.setAttribute("material", "opacity: 0;");
         
         aBox.appendChild(aImage);
-        gameContainer.appendChild(aBox);
+        items.push(aBox);
       });
+      
+      for(item of items){
+        gameContainer.appendChild(item);
+      }
+      
+      let tamanho = 0;
+      let intervalPreencher = setInterval(()=>{
+        items[tamanho].setAttribute("animation", {
+          property: "material.opacity",
+          to: 1,
+          dur: 150
+        })
+        
+        items[tamanho].querySelector("a-image").setAttribute("animation", {
+          property: "material.opacity",
+          to: 1,
+          dur: 200
+        });
+        
+        tamanho++;
+        
+        if(tamanho >= items.length){
+          clearInterval(intervalPreencher);
+        }
+      }, 150);
       
     }
     
