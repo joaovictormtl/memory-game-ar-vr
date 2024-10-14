@@ -59,6 +59,14 @@
         
       </a-plane>
       
+      <a-plane
+        id="blackboard"
+        color="#eee"
+        width="10"
+        height="9"
+        position="-11 0 -22">
+      </a-plane>
+      
       <a-entity id="game-container" position="0 3 -18"></a-entity>
     </a-scene>
   </body>
@@ -69,7 +77,41 @@
     const title = document.querySelector("a-text#title");
     const gameButton = document.querySelector("a-box#gameButton");
     const blueButton = document.querySelector("a-box#blueButton");
+    const blackboard = document.querySelector("a-plane#blackboard");
     let cardBefore;
+    
+    const cardsDefinitions = [
+      {
+        src: "img/card-html.png",
+        title: "Html",
+        definition: "HTML é uma linguagem de marcação utilizada na construção de páginas na Web. Documentos HTML podem ser interpretados por navegadores."
+      },
+      {
+        src: "img/card-python.png",
+        title: "Python",
+        definition: "Python é uma linguagem de programação de alto nível, interpretada de script, imperativa, orientada a objetos, funcional, de tipagem dinâmica e forte. Foi lançada por Guido van Rossum em 1991."
+      },
+      {
+        src: "img/card-npm.png",
+        title: "Npm",
+        definition: "npm é um gerenciador de pacotes para o Node.JS npm, Inc. é uma subsidiária do GitHub, que fornece hospedagem para desenvolvimento de software e controle de versão com o uso do Git."
+      },
+      {
+        src: "img/card-sql.png",
+        title: "MySQL",
+        definition: "O MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. É atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhões de instalações pelo mundo."
+      },
+      {
+        src: "img/card-react.png",
+        title: "React",
+        definition: "O React é uma biblioteca front-end JavaScript de código aberto com foco em criar interfaces de usuário em páginas web."
+      },
+      {
+        src: "img/card-java.png",
+        title: "Java",
+        definition: "Java é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipe de programadores chefiada por James Gosling, na empresa Sun Microsystems, que em 2008 foi adquirido pela empresa Oracle Corporation."
+      }
+    ]
     
     
     gameButton.addEventListener("mouseenter", ()=>{
@@ -104,7 +146,7 @@
       
       let imgs = [
       "img/card-html.png",
-      "img/card-css.png",
+      "img/card-python.png",
       "img/card-html.png",
       "img/card-npm.png",
       "img/card-sql.png",
@@ -112,7 +154,7 @@
       "img/card-react.png",
       "img/card-sql.png",
       "img/card-java.png",
-      "img/card-css.png",
+      "img/card-python.png",
       "img/card-java.png",
       "img/card-react.png"
       ].sort(function() { return 0.5 - Math.random() });
@@ -170,17 +212,10 @@
             property: "rotation",
             to: "0 180 0",
             dur: 500
-          });
-          
+          }); 
         }
-        
-        setTimeout(()=>{
-          addEventoMouse();
-        }, 500);
-        
+        addEventoMouse();
       }, 3000);
-      
-      
     }
     
     function addEventoMouse(){
@@ -194,7 +229,7 @@
             item.setAttribute("animation", {
               property: "rotation",
               to: "0 0 0",
-              dur: 1000
+              dur: 500
             });
 
             if(!cardBefore){
@@ -208,6 +243,8 @@
               item.setAttribute("color", "#73fc03");
               cardBefore.setAttribute("color", "#73fc03");
               cardBefore = null;
+              writeBlackboard(item);
+              chkWin();
             }
             else{
               item.setAttribute("color", "tomato");
@@ -226,13 +263,17 @@
         })
       });
     }
+    
+    function writeBlackboard(card){
+      
+    }
 
     function addStyle(elems){
       for(let el of elems){
         el.setAttribute("animation", {
             property: "rotation",
             to: "0 180 0",
-            dur: 700
+            dur: 500
         });
         
         setTimeout(()=>{
@@ -241,7 +282,20 @@
           cardBefore = null;
         }, 800 * elems.lenght);
       }
-       
+    }
+    
+    function chkWin(){
+      let count = 0;
+      const cards = document.querySelectorAll(".item");
+      
+      for(let card of cards){
+        if(card.getAttribute("color") == "#73fc03") count++;
+      }
+      
+      if(count == 12){
+        console.log("Ganhou");
+        
+      }
     }
   </script>
 </html>
