@@ -176,7 +176,7 @@
         
         setTimeout(()=>{
           addEventoMouse();
-        }, 1000);
+        }, 500);
         
       }, 3000);
       
@@ -184,43 +184,47 @@
     }
     
     function addEventoMouse(){
+     let timeoutId; 
       
       document.querySelectorAll("a-box.item").forEach(item=>{
-      // Evento de mouseenter: Faz a a-box revelar o card
-      item.addEventListener("mouseenter", ()=>{
-        
-                            
-        item.setAttribute("animation", {
-          property: "rotation",
-          to: "0 0 0",
-          dur: 1000
+        // Evento de mouseenter: Faz a a-box revelar o card
+        item.addEventListener("mouseenter", ()=>{
+
+          timeoutId = setTimeout(()=>{
+            item.setAttribute("animation", {
+              property: "rotation",
+              to: "0 0 0",
+              dur: 1000
+            });
+
+            if(!cardBefore){
+              cardBefore = item;
+              cardBefore.setAttribute("color", "tomato");
+              cardBefore.classList.remove("raycastable");
+              return;
+            } 
+            else if(cardBefore.querySelector("a-image").getAttribute("src") == item.querySelector("a-image").getAttribute("src")){
+              item.classList.remove("raycastable");
+              item.setAttribute("color", "#73fc03");
+              cardBefore.setAttribute("color", "#73fc03");
+              cardBefore = null;
+            }
+            else{
+              item.setAttribute("color", "tomato");
+
+              setTimeout(()=>{
+                addStyle([item, cardBefore]);
+              }, 1000);
+
+            }
+          }, 1000);                  
         });
         
-        if(!cardBefore){
-          cardBefore = item;
-          cardBefore.setAttribute("color", "tomato");
-          cardBefore.classList.remove("raycastable");
-          return;
-        } 
-        else if(cardBefore.querySelector("a-image").getAttribute("src") == item.querySelector("a-image").getAttribute("src")){
-          item.classList.remove("raycastable");
-          item.setAttribute("color", "#73fc03");
-          cardBefore.setAttribute("color", "#73fc03");
-          cardBefore = null;
-        }
-        else{
-          item.setAttribute("color", "tomato");
-          
-          setTimeout(()=>{
-            addStyle([item, cardBefore]);
-          }, 1000);
-          
-        }
-        
-        });
+        // Caso o cursor saia do card dentro de um intervalo de 1 segundo, o card não vira
+        item.addEventListener("mouseleave", ()=>{
+          clearTimeout(timeoutId);
+        })
       });
-      
-      
     }
 
     function addStyle(elems){
@@ -237,14 +241,7 @@
           cardBefore = null;
         }, 800 * elems.lenght);
       }
-      
-      
+       
     }
-    
-    
-    
-    window.addEventListener("load", function(){
-      
-    });
   </script>
 </html>
