@@ -10,6 +10,10 @@
   <body style="overflow: hidden;">
     <a-scene vr-mode-ui="enabled: true" embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       
+      <a-assets>
+        <a-asset-item id="comfortaaFont" src=""></a-asset-item>
+      </a-assets>
+      
       <a-entity camera look-controls>
         <a-entity 
           cursor="fuse: true; fuseTimeOut: 2000"
@@ -19,7 +23,30 @@
       </a-entity>
       
       <!-- Sky -->
-      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/teste.png?v=1728820905757"></a-sky>
+      <a-sky color="#c1c1c1"></a-sky>
+      
+      <a-text
+        value="Memory Game"
+        position="0 2.5 -13"
+        scale="3 3 1"
+        font=""
+        align="center">
+      </a-text>
+      
+      <a-plane
+        id="welcome-msg"
+        position="0 0 -10"
+        width="5"
+        height="2"
+        color="#eee">
+        
+        <a-text
+          color="#333"
+          value="Iniciar"
+          position="0 0 1"
+          align="center">
+        </a-text>
+      </a-plane>
       
       <a-entity id="game-container" position="0 3 -18">
         
@@ -68,10 +95,9 @@
         
       });
     }
-    criarBoxes();
     
-    
-    document.querySelectorAll("a-box.item").forEach(item=>{
+    function addEventoMouse(){
+      document.querySelectorAll("a-box.item").forEach(item=>{
       let timeoutId;
       
       // Evento de mouseenter: Faz a a-box revelar o card
@@ -79,22 +105,28 @@
         item.setAttribute("animation", {
           property: "rotation",
           to: "0 0 0",
-          dur: 1000,
-          easing: "easeInOutQuad"
+          dur: 1000
         });
+        item.setAttribute("color", "#73fc03");
         
+        });
       });
+    }
+    
       
       //Evento de mouseleave: Faz a a-box ocultar o card
-      item.addEventListener("mouseleave", () => {
-        item.setAttribute("animation", {
-            property: "rotation",
-            to: "0 180 0",
-            dur: 700,
-            easing: "easeInOutQuad"
-        });
-      });
-    });
+      // item.addEventListener("mouseleave", () => {
+      //   item.setAttribute("animation", {
+      //       property: "rotation",
+      //       to: "0 180 0",
+      //       dur: 700
+      //   });
+      //   item.setAttribute("color", "#333");
+      // });
     
+    
+    window.addEventListener("load", function(){
+      
+    })
   </script>
 </html>
