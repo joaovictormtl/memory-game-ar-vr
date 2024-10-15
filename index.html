@@ -112,6 +112,7 @@
     let tempo = 10;
     let cardBefore;
     
+    // Todos as informações para preencher a blackboard conforme o card específico
     const cardsDefinitions = [
       {
         src: "img/card-html.png",
@@ -160,44 +161,46 @@
       }
     ]
     
-    
-    gameButton.addEventListener("mouseenter", ()=>{
-      gameButton.setAttribute("visible", "false");
-      powerIcon.setAttribute("visible", "false");
+    // Eventos para os elementos da tela inicial
+    window.addEventListener("load", ()=>{
+      gameButton.addEventListener("mouseenter", ()=>{
+        gameButton.setAttribute("visible", "false");
+        powerIcon.setAttribute("visible", "false");
       
-      initialInterface.setAttribute("animation", {
-        property: "material.opacity",
-        to: 0,
-        dur: 1000
-      });
-      
-      setTimeout(()=>{
-        title.setAttribute("color", "#eee");
-      }, 500)
-      
-      title.setAttribute("animation", {
-          property: "position",
-          to: "-1.1 0 0.5",
-          dur: 1000
-      });
-      
-      setTimeout(()=>{
-        title.setAttribute("visible", "false");
-        initialInterface.parentNode.removeChild(initialInterface);
-        blackboard.setAttribute("animation", {
-          property: "color",
-          to: "#fff0c7",
+        initialInterface.setAttribute("animation", {
+          property: "material.opacity",
+          to: 0,
           dur: 1000
         });
-        
+      
         setTimeout(()=>{
-          boxTime.setAttribute("visible", "true");
-        }, 1000);
+          title.setAttribute("color", "#eee");
+        }, 500)
+
+        title.setAttribute("animation", {
+            property: "position",
+            to: "-1.1 0 0.5",
+            dur: 1000
+        });
+      
+        setTimeout(()=>{
+          title.setAttribute("visible", "false");
+          initialInterface.parentNode.removeChild(initialInterface);
+          
+          blackboard.setAttribute("animation", {
+            property: "color",
+            to: "#fff0c7",
+            dur: 1000
+          });
         
-        criarBoxes();
-      }, 1300);
+          setTimeout(()=>{
+            boxTime.setAttribute("visible", "true");
+          }, 1000);
+        
+          criarBoxes();
+        }, 1300);
+      });
     });
-    
     
     function criarBoxes(){
       const items = [];
@@ -261,20 +264,22 @@
         
         if(tamanho >= items.length){
           clearInterval(intervalPreencher);
+          
+          // Um atraso, para garantir que os cards só irão se ocultar após
+          // todos esteverem visíveis
+          setTimeout(()=>{
+              for(item of items){
+              item.setAttribute("animation", {
+                property: "rotation",
+                to: "0 180 0",
+                dur: 500
+              }); 
+            }
+            addEventoMouse();
+            iniciaTempo();
+          }, 500);
         }
       }, 150);
-      
-      setTimeout(()=>{
-        for(item of items){
-          item.setAttribute("animation", {
-            property: "rotation",
-            to: "0 180 0",
-            dur: 500
-          }); 
-        }
-        addEventoMouse();
-        iniciaTempo();
-      }, 3000);
     }
     
     function addEventoMouse(){
