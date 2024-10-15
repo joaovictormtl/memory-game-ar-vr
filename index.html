@@ -8,13 +8,13 @@
     <title>Memory Game</title>
   </head>
   <body style="overflow: hidden;">
-    <a-scene vr-mode-ui="enabled: true" embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <a-scene>
       
       <a-entity camera look-controls>
         <a-entity 
           cursor="fuse: true; fuseTimeOut: 2000"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;" 
-          material="color: #e6ffff; shader: flat;"
+          material="color: gold; shader: flat;"
           position="0 0 -1"
           raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
@@ -64,9 +64,9 @@
       <a-plane
         id="blackboard"
         color="#320b63"
-        width="10"
+        width="12"
         height="9"
-        position="-11 0 -22">
+        position="-12 0 -22">
         
         <a-image
           src="img/brain-icon.png"
@@ -75,6 +75,25 @@
           position="0.3 0 1">
         </a-image>
       </a-plane>
+      
+      <a-box
+          id="boxTime"
+          position="-6.5 -2.5 -18"
+          width="1.5"
+          height="1.5"
+          depth="0.5"
+          color="red"
+          visible="false">
+          
+          <a-text
+            id="gameTime"
+            value="60"
+            position="0.1 0 0.6"
+            align="center"
+            scale="3 3 1"
+            color="#eee">
+          </a-text>
+        </a-box>
       
       <a-entity id="game-container" position="0 3 -18"></a-entity>
     </a-scene>
@@ -87,53 +106,57 @@
     const gameButton = document.querySelector("a-cylinder#gameButton");
     const powerIcon = document.querySelector("a-image#powerIcon");
     const blackboard = document.querySelector("a-plane#blackboard");
+    const boxTime = document.querySelector("a-box#boxTime");
+    let gameTime = document.querySelector("a-text#gameTime");
+    let intervalTempo;
+    let tempo = 10;
     let cardBefore;
     
     const cardsDefinitions = [
       {
         src: "img/card-html.png",
         title: "Html",
-        definition: "HTML é uma linguagem de marcação utilizada na construção de páginas na Web. Documentos HTML podem ser interpretados por navegadores."
+        definition: "HTML e uma linguagem de marcaçao utilizada na construcao de paginas na Web. Documentos HTML podem ser interpretados por navegadores."
       },
       {
         src: "img/card-python.png",
         title: "Python",
-        definition: "Python é uma linguagem de programação de alto nível, interpretada de script, imperativa, orientada a objetos, funcional, de tipagem dinâmica e forte. Foi lançada por Guido van Rossum em 1991."
+        definition: "Python e uma linguagem de programacao de alto nivel, interpretada de script, imperativa, orientada a objetos, funcional, de tipagem dinamica e forte. Foi lancada por Guido van Rossum em 1991."
       },
       {
         src: "img/card-npm.png",
         title: "Npm",
-        definition: "npm é um gerenciador de pacotes para o Node.JS npm, Inc. é uma subsidiária do GitHub, que fornece hospedagem para desenvolvimento de software e controle de versão com o uso do Git."
+        definition: "npm e um gerenciador de pacotes para o Node.JS npm, Inc. e uma subsidiaria do GitHub, que fornece hospedagem para desenvolvimento de software e controle de versao com o uso do Git."
       },
       {
         src: "img/card-sql.png",
         title: "MySQL",
-        definition: "O MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. É atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhões de instalações pelo mundo."
+        definition: "O MySQL e um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. E atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhoes de instalacoes pelo mundo."
       },
       {
         src: "img/card-react.png",
         title: "React",
-        definition: "O React é uma biblioteca front-end JavaScript de código aberto com foco em criar interfaces de usuário em páginas web."
+        definition: "O React e uma biblioteca front-end JavaScript de codigo aberto com foco em criar interfaces de usuario em paginas web."
       },
       {
         src: "img/card-java.png",
         title: "Java",
-        definition: "Java é uma linguagem de programação orientada a objetos desenvolvida na década de 90 por uma equipe de programadores chefiada por James Gosling, na empresa Sun Microsystems, que em 2008 foi adquirido pela empresa Oracle Corporation."
+        definition: "Java e uma linguagem de programacao orientada a objetos desenvolvida na decada de 90 por uma equipe de programadores chefiada por James Gosling, na empresa Sun Microsystems, que em 2008 foi adquirido pela empresa Oracle Corporation."
       },
       {
         src: "img/card-js.png",
         title: "JavaScript",
-        definition: "JavaScript é uma linguagem de programação interpretada estruturada, de script em alto nível com tipagem dinâmica fraca e multiparadigma. Juntamente com HTML e CSS, o JavaScript é uma das três principais tecnologias da World Wide Web."
+        definition: "JavaScript e uma linguagem de programacao interpretada estruturada, de script em alto nível com tipagem dinamica fraca e multiparadigma. Juntamente com HTML e CSS, o JavaScript e uma das tres principais tecnologias da World Wide Web."
       },
       {
         src: "img/card-angular.png",
         title: "Angular",
-        definition: "Angular é uma plataforma de aplicações web de código-fonte aberto e front-end baseado em TypeScript liderado pela Equipe Angular do Google e por uma comunidade de indivíduos e corporações. Angular é uma reescrita completa do AngularJS, feito pela mesma equipe que o construiu."
+        definition: "Angular e uma plataforma de aplicacoes web de codigo-fonte aberto e front-end baseado em TypeScript liderado pela Equipe Angular do Google e por uma comunidade de individuos e corporacoes. Angular e uma reescrita completa do AngularJS, feito pela mesma equipe que o construiu."
       },
       {
         src: "img/card-css.png",
         title: "Css",
-        definition: "Cascading Style Sheets é um mecanismo para adicionar estilos a uma página web, aplicado diretamente nas tags HTML ou ficar contido dentro das tags <style>. Também é possível, adicionar estilos adicionando um link para um arquivo CSS que contém os estilos."
+        definition: "Cascading Style Sheets e um mecanismo para adicionar estilos a uma pagina web, aplicado diretamente nas tags HTML ou ficar contido dentro das tags <style>. Tambem e possivel, adicionar estilos adicionando um link para um arquivo CSS que contem os estilos."
       }
     ]
     
@@ -166,9 +189,15 @@
           to: "#fff0c7",
           dur: 1000
         });
+        
+        setTimeout(()=>{
+          boxTime.setAttribute("visible", "true");
+        }, 1000);
+        
         criarBoxes();
       }, 1300);
     });
+    
     
     function criarBoxes(){
       const items = [];
@@ -244,6 +273,7 @@
           }); 
         }
         addEventoMouse();
+        iniciaTempo();
       }, 3000);
     }
     
@@ -293,6 +323,42 @@
       });
     }
     
+    function iniciaTempo(){
+      // Tempo do Jogo
+        intervalTempo = setInterval(()=>{
+          gameTime.setAttribute("value", `${tempo}`)
+          tempo--;
+          
+          if(tempo < 0){
+            clearInterval(intervalTempo);
+            looseGame();
+            
+          }
+        }, 1000);
+    }
+    
+    function looseGame(){
+      // Esvazia a blackboard
+      while(blackboard.firstChild){
+          blackboard.removeChild(blackboard.firstChild);
+      }
+      blackboard.setAttribute("color", "red");
+      
+      // Cria a mensagem de fracasso
+      const failureText = document.createElement("a-text");
+      failureText.setAttribute("color", "#eee");
+      failureText.setAttribute("value", "Voce Perdeu...");
+      failureText.setAttribute("scale", "5 5 1");
+      failureText.setAttribute("position", "-3.5 0 1");
+      blackboard.appendChild(failureText);
+      
+      // Retira a interação com os cards
+      const cards = document.querySelectorAll(".item");
+      for(card of cards){
+        card.classList.remove("raycastable");
+      }
+    }
+    
     function writeBlackboard(card){
       if(!blackboard.innerHTML == ""){
         while(blackboard.firstChild){
@@ -312,9 +378,10 @@
           
           const aDefinition = document.createElement("a-text");
           aDefinition.setAttribute("color", "#000");
-          aDefinition.setAttribute("position", "-3.2 0 1");
-          aDefinition.setAttribute("scale", "1.5 1.5 1");
+          aDefinition.setAttribute("position", "-4.5 0 1");
+          aDefinition.setAttribute("scale", "2 2 1");
           aDefinition.setAttribute("value", `${definition}`);
+          aDefinition.setAttribute("lineHeight", "60")
           
           blackboard.appendChild(aTitle);
           blackboard.appendChild(aDefinition);
@@ -358,8 +425,9 @@
           wonText.setAttribute("value", "Parabens!");
           wonText.setAttribute("scale", "5 5 1");
           wonText.setAttribute("position", "-2 0 1");
-          
+        
           blackboard.appendChild(wonText);
+          
         }
         
       }
