@@ -161,43 +161,46 @@
       }
     ]
     
-    gameButton.addEventListener("mouseenter", ()=>{
-      gameButton.setAttribute("visible", "false");
-      powerIcon.setAttribute("visible", "false");
+    // Eventos para os elementos da tela inicial
+    window.addEventListener("load", ()=>{
+      gameButton.addEventListener("mouseenter", ()=>{
+        gameButton.setAttribute("visible", "false");
+        powerIcon.setAttribute("visible", "false");
       
-      initialInterface.setAttribute("animation", {
-        property: "material.opacity",
-        to: 0,
-        dur: 1000
-      });
-      
-      setTimeout(()=>{
-        title.setAttribute("color", "#eee");
-      }, 500)
-      
-      title.setAttribute("animation", {
-          property: "position",
-          to: "-1.1 0 0.5",
-          dur: 1000
-      });
-      
-      setTimeout(()=>{
-        title.setAttribute("visible", "false");
-        initialInterface.parentNode.removeChild(initialInterface);
-        blackboard.setAttribute("animation", {
-          property: "color",
-          to: "#fff0c7",
+        initialInterface.setAttribute("animation", {
+          property: "material.opacity",
+          to: 0,
           dur: 1000
         });
-        
+      
         setTimeout(()=>{
-          boxTime.setAttribute("visible", "true");
-        }, 1000);
+          title.setAttribute("color", "#eee");
+        }, 500)
+
+        title.setAttribute("animation", {
+            property: "position",
+            to: "-1.1 0 0.5",
+            dur: 1000
+        });
+      
+        setTimeout(()=>{
+          title.setAttribute("visible", "false");
+          initialInterface.parentNode.removeChild(initialInterface);
+          
+          blackboard.setAttribute("animation", {
+            property: "color",
+            to: "#fff0c7",
+            dur: 1000
+          });
         
-        criarBoxes();
-      }, 1300);
+          setTimeout(()=>{
+            boxTime.setAttribute("visible", "true");
+          }, 1000);
+        
+          criarBoxes();
+        }, 1300);
+      });
     });
-    
     
     function criarBoxes(){
       const items = [];
