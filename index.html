@@ -112,6 +112,7 @@
     let tempo = 10;
     let cardBefore;
     
+    // Todos as informações para preencher a blackboard conforme o card específico
     const cardsDefinitions = [
       {
         src: "img/card-html.png",
@@ -159,7 +160,6 @@
         definition: "Cascading Style Sheets e um mecanismo para adicionar estilos a uma pagina web, aplicado diretamente nas tags HTML ou ficar contido dentro das tags <style>. Tambem e possivel, adicionar estilos adicionando um link para um arquivo CSS que contem os estilos."
       }
     ]
-    
     
     gameButton.addEventListener("mouseenter", ()=>{
       gameButton.setAttribute("visible", "false");
@@ -261,20 +261,22 @@
         
         if(tamanho >= items.length){
           clearInterval(intervalPreencher);
+          
+          // Um atraso, para garantir que os cards só irão se ocultar após
+          // todos esteverem visíveis
+          setTimeout(()=>{
+              for(item of items){
+              item.setAttribute("animation", {
+                property: "rotation",
+                to: "0 180 0",
+                dur: 500
+              }); 
+            }
+            addEventoMouse();
+            iniciaTempo();
+          }, 500);
         }
       }, 150);
-      
-      setTimeout(()=>{
-        for(item of items){
-          item.setAttribute("animation", {
-            property: "rotation",
-            to: "0 180 0",
-            dur: 500
-          }); 
-        }
-        addEventoMouse();
-        iniciaTempo();
-      }, 3000);
     }
     
     function addEventoMouse(){
