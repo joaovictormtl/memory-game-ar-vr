@@ -248,9 +248,6 @@
           dur: 1000
         });
         
-        // Apaga a texto de jogo perdido
-        blackboard.querySelector("#failureTextId").remove();
-        
         // Revela o brain-icon, para que a blackboard não fique vazia
         setTimeout(()=>{
           blackboard.querySelector("a-image").setAttribute("visible", "true");
@@ -451,7 +448,7 @@
       for(card of cards){
         card.classList.remove("raycastable");
       }
-            
+      showResetButton(); 
     }
     
     function showResetButton(){
@@ -460,10 +457,10 @@
       resetBox.setAttribute("class", "raycastable");
       
       resetBox.addEventListener("mouseenter", ()=>{
-        // Esvazia a blackboard
+        resetBox.setAttribute("visible", "false");
+        resetBox.classList.remove("raycastable");
         clearBlackboard();
-        
-        
+        newGame();
       });
     }
     
