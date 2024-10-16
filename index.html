@@ -216,12 +216,27 @@
             boxTime.setAttribute("visible", "true");
           }, 1000);
         
-          criarBoxes();
+          newGame();
         }, 1300);
       });
     });
     
-    function criarBoxes(){
+    function newGame(){
+      let imgs = [
+      "img/card-js.png",
+      "img/card-python.png",
+      "img/card-js.png",
+      "img/card-npm.png",
+      "img/card-angular.png",
+      "img/card-npm.png",
+      "img/card-react.png",
+      "img/card-angular.png",
+      "img/card-java.png",
+      "img/card-python.png",
+      "img/card-java.png",
+      "img/card-react.png"
+      ].sort(function() { return 0.5 - Math.random() });
+      
       // Se já existirem cards, vamos fazê-los sumirem e, depois, removê-los
       if(!gameContainer.innerHTML == ""){
         let cards = gameContainer.querySelectorAll(".item");
@@ -253,25 +268,21 @@
             }, 300);
             
           } 
-        }, 300);
+        }, 150);
       }
       
-      const items = [];
+      if(gameContainer.innerHTML == ""){
+        createCards(imgs);
+      } else{
+        setTimeout(()=>{
+          createCards(imgs);
+        }, 250 * 12)
+      }
       
-      let imgs = [
-      "img/card-js.png",
-      "img/card-python.png",
-      "img/card-js.png",
-      "img/card-npm.png",
-      "img/card-angular.png",
-      "img/card-npm.png",
-      "img/card-react.png",
-      "img/card-angular.png",
-      "img/card-java.png",
-      "img/card-python.png",
-      "img/card-java.png",
-      "img/card-react.png"
-      ].sort(function() { return 0.5 - Math.random() });
+    }
+    
+    function createCards(imgs){
+      const items = [];
       
       imgs.forEach((img, index)=>{
         const aBox = document.createElement("a-box");
@@ -328,6 +339,7 @@
                 dur: 500
               }); 
             }
+            tempo = 2;
             addEventoMouse();
             iniciaTempo();
           }, 500);
@@ -369,7 +381,6 @@
               setTimeout(()=>{
                 addStyle([item, cardBefore]);
               }, 1000);
-
             }
           }, 1000);                  
         });
