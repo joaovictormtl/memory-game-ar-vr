@@ -204,7 +204,7 @@
       
         setTimeout(()=>{
           title.setAttribute("visible", "false");
-          initialInterface.parentNode.removeChild(initialInterface);
+          initialInterface.remove();
           
           blackboard.setAttribute("animation", {
             property: "color",
@@ -222,6 +222,40 @@
     });
     
     function criarBoxes(){
+      // Se já existirem cards, vamos fazê-los sumirem e, depois, removê-los
+      if(!gameContainer.innerHTML == ""){
+        let cards = gameContainer.querySelectorAll(".item");
+        
+        let tamanho = cards.length - 1;
+        let intervalApagar = setInterval(()=>{
+          cards[tamanho].setAttribute("animation", {
+            property: "material.opacity",
+            to: 0,
+            dur: 150
+          })
+
+          cards[tamanho].querySelector("a-image").setAttribute("animation", {
+            property: "material.opacity",
+            to: 0,
+            dur: 200
+          });
+          
+          tamanho--;
+
+          if(tamanho < 0){
+            clearInterval(intervalApagar);
+            
+            // Excluir os cards (com um atraso de 300, para dar tempo do último card sumir antes de ser excluído)
+            setTimeout(()=>{
+                cards.forEach(card=>{
+                card.remove();
+              });
+            }, 300);
+            
+          } 
+        }, 300);
+      }
+      
       const items = [];
       
       let imgs = [
@@ -390,6 +424,22 @@
       for(card of cards){
         card.classList.remove("raycastable");
       }
+            
+    }
+    
+    function showResetButton(){
+      // Mostra o botão de Reset
+      resetBox.setAttribute("visible", "true");
+      resetBox.setAttribute("class", "raycastable");
+      
+      resetBox.addEventListener("mouseenter", ()=>{
+        // Esvazia a blackboard
+        while(blackboard.firstChild){
+            blackboard.removeChild(blackboard.firstChild);
+        }
+        
+        
+      });
     }
     
     function writeBlackboard(card){
