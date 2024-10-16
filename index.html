@@ -95,6 +95,24 @@
           </a-text>
         </a-box>
       
+      <a-box
+        id="resetBox"
+        position="-13 -2.5 -18"
+        width="1.5"
+        height="1.5"
+        depth="0.5"
+        color="#73fc03"
+        visible="false">
+
+        <a-image
+          src="img/reset-icon.png"
+          position="0.2 0 0.5"
+          width="1"
+          height="1">
+        </a-image>
+      </a-box>
+      
+      
       <a-entity id="game-container" position="0 3 -18"></a-entity>
     </a-scene>
   </body>
@@ -106,6 +124,7 @@
     const gameButton = document.querySelector("a-cylinder#gameButton");
     const powerIcon = document.querySelector("a-image#powerIcon");
     const blackboard = document.querySelector("a-plane#blackboard");
+    const resetBox = document.querySelector("a-box#resetBox");
     const boxTime = document.querySelector("a-box#boxTime");
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
