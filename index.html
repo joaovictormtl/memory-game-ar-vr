@@ -72,7 +72,8 @@
           src="img/brain-icon.png"
           width="4"
           height="4"
-          position="0.3 0 1">
+          position="0.3 0 1"
+          visible="true">
         </a-image>
       </a-plane>
       
@@ -128,7 +129,7 @@
     const boxTime = document.querySelector("a-box#boxTime");
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
-    let tempo = 2;
+    let tempo = 15;
     let cardBefore;
     
     // Todos as informações para preencher a blackboard conforme o card específico
@@ -239,6 +240,17 @@
       
       // Se já existirem cards, vamos fazê-los sumirem e, depois, removê-los
       if(!gameContainer.innerHTML == ""){
+        cardBefore = null;
+        
+        blackboard.setAttribute("animation", {
+          property: "color",
+          to: "#fff0c7",
+          dur: 1000
+        });
+        
+        blackboard.querySelector("#failureTextId").remove();
+        
+        
         let cards = gameContainer.querySelectorAll(".item");
         
         let tamanho = cards.length - 1;
@@ -276,7 +288,7 @@
       } else{
         setTimeout(()=>{
           createCards(imgs);
-        }, 250 * 12)
+        }, 200 * imgs.length);
       }
       
     }
@@ -339,7 +351,7 @@
                 dur: 500
               }); 
             }
-            tempo = 2;
+            tempo = 15;
             addEventoMouse();
             iniciaTempo();
           }, 500);
@@ -407,9 +419,7 @@
     
     function looseGame(){
       // Esvazia a blackboard
-      while(blackboard.firstChild){
-          blackboard.removeChild(blackboard.firstChild);
-      }
+      clearBlackboard();
       
       blackboard.setAttribute("animation", {
         property: "color",
@@ -445,20 +455,14 @@
       
       resetBox.addEventListener("mouseenter", ()=>{
         // Esvazia a blackboard
-        while(blackboard.firstChild){
-            blackboard.removeChild(blackboard.firstChild);
-        }
+        clearBlackboard();
         
         
       });
     }
     
     function writeBlackboard(card){
-      if(!blackboard.innerHTML == ""){
-        while(blackboard.firstChild){
-          blackboard.removeChild(blackboard.firstChild);
-        }
-      }
+      clearBlackboard();
       
       const cardSrc = card.querySelector("a-image").getAttribute("src");
       
@@ -480,6 +484,20 @@
           blackboard.appendChild(aTitle);
           blackboard.appendChild(aDefinition);
         }
+      }
+    }
+    
+    function clearBlackboard(){
+      if(!blackboard.innerHTML == ""){
+        const brain = blackboard.querySelector("a-image");
+        if(brain.getAttribute("visible")){
+          brain.setAttribute("visible", "false");
+        }
+        
+        const textsBlackboard = blackboard.querySelectorAll("a-text");
+        textsBlackboard.forEach(text=>{
+          text.remove();
+        })
       }
     }
 
