@@ -248,7 +248,13 @@
           dur: 1000
         });
         
+        // Apaga a texto de jogo perdido
         blackboard.querySelector("#failureTextId").remove();
+        
+        // Revela o brain-icon, para que a blackboard não fique vazia
+        setTimeout(()=>{
+          blackboard.querySelector("a-image").setAttribute("visible", "true");
+        }, 500);
         
         
         let cards = gameContainer.querySelectorAll(".item");
