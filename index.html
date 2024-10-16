@@ -109,7 +109,7 @@
     const boxTime = document.querySelector("a-box#boxTime");
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
-    let tempo = 10;
+    let tempo = 2;
     let cardBefore;
     
     // Todos as informações para preencher a blackboard conforme o card específico
@@ -346,15 +346,25 @@
       while(blackboard.firstChild){
           blackboard.removeChild(blackboard.firstChild);
       }
-      blackboard.setAttribute("color", "red");
+      
+      blackboard.setAttribute("animation", {
+        property: "color",
+        to: "#ff0000",
+        dur: 300
+      });
       
       // Cria a mensagem de fracasso
-      const failureText = document.createElement("a-text");
-      failureText.setAttribute("color", "#eee");
-      failureText.setAttribute("value", "Voce Perdeu...");
-      failureText.setAttribute("scale", "5 5 1");
-      failureText.setAttribute("position", "-3.5 0 1");
-      blackboard.appendChild(failureText);
+      // Atrasa a criação em 300
+      setTimeout(()=>{
+        const failureText = document.createElement("a-text");
+        failureText.setAttribute("id", "failureTextId");
+        failureText.setAttribute("color", "#eee");
+        failureText.setAttribute("value", "Voce Perdeu...");
+        failureText.setAttribute("scale", "5 5 1");
+        failureText.setAttribute("position", "-3.5 0 1");
+        blackboard.appendChild(failureText);
+      }, 300);
+      
       
       // Retira a interação com os cards
       const cards = document.querySelectorAll(".item");
