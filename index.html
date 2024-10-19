@@ -129,7 +129,7 @@
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
     let tempo = 15;
-    let cardBefore;
+    let cardBefore = null;
     
     // Todos as informações para preencher a blackboard conforme o card específico
     const cardsDefinitions = [
@@ -270,7 +270,7 @@
       });
     }
     
-    function newGame(){
+    function newGame(){      
       let imgs = [
       "img/card-js.png",
       "img/card-python.png",
@@ -285,8 +285,6 @@
       "img/card-java.png",
       "img/card-react.png"
       ].sort(function() { return 0.5 - Math.random() });
-      
-      cardBefore = null;
       
       if(gameContainer.innerHTML == ""){
         createCards(imgs);
@@ -364,6 +362,8 @@
             
             tempo = 15;
             addEventoMouse();
+            cardBefore = null;
+            clearInterval(intervalTempo);
             iniciaTempo();
           }, 500);
         }
@@ -417,15 +417,15 @@
     
     function iniciaTempo(){
       // Tempo do Jogo
-        intervalTempo = setInterval(()=>{
-          gameTime.setAttribute("value", `${tempo}`)
-          tempo--;
-          
-          if(tempo < 0){
-            clearInterval(intervalTempo);
-            looseGame();
-          }
-        }, 1000);
+      intervalTempo = setInterval(()=>{
+        gameTime.setAttribute("value", `${tempo}`);
+        tempo--;
+
+        if(tempo < 0){
+          clearInterval(intervalTempo);
+          looseGame();
+        }
+      }, 1000);
     }
     
     function looseGame(){
@@ -464,6 +464,7 @@
       
       resetBox.addEventListener("mouseenter", ()=>{
         resetBox.classList.remove("raycastable");
+        clearBlackboard();
         newGame();
       });
     }
