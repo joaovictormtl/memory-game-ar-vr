@@ -128,7 +128,7 @@
     const boxTime = document.querySelector("a-box#boxTime");
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
-    let tempo = 15;
+    let tempo;
     let cardBefore = null;
     
     // Todos as informações para preencher a blackboard conforme o card específico
@@ -182,6 +182,14 @@
     
     // Eventos para os elementos da tela inicial
     window.addEventListener("load", ()=>{
+      // Adiciona o evento de mouseenter no botão de reset
+      resetBox.addEventListener("mouseenter", ()=>{
+        resetBox.setAttribute("visible", "false");
+        resetBox.classList.remove("raycastable");
+        clearBlackboard();
+        newGame();
+      });
+      
       gameButton.addEventListener("mouseenter", ()=>{
         gameButton.setAttribute("visible", "false");
         powerIcon.setAttribute("visible", "false");
@@ -270,7 +278,7 @@
       });
     }
     
-    function newGame(){      
+    function newGame(){
       let imgs = [
       "img/card-js.png",
       "img/card-python.png",
@@ -348,7 +356,7 @@
           // Um atraso, para garantir que os cards só irão se ocultar após
           // todos esteverem visíveis
           setTimeout(()=>{
-              for(item of items){
+            for(item of items){
               item.setAttribute("animation", {
                 property: "rotation",
                 to: "0 180 0",
@@ -362,8 +370,8 @@
             
             cardBefore = null;
             tempo = 15;
-            addEventoMouse();
             clearInterval(intervalTempo);
+            addEventoMouse();
             iniciaTempo();
           }, 500);
         }
@@ -371,10 +379,9 @@
     }
     
     function addEventoMouse(){
-     let timeoutId; 
-      
-      document.querySelectorAll("a-box.item").forEach(item=>{
-        // Evento de mouseenter: Faz a a-box revelar o card
+      let timeoutId;
+    
+      document.querySelectorAll("a-box.item").forEach((item)=>{
         item.addEventListener("mouseenter", ()=>{
 
           timeoutId = setTimeout(()=>{
@@ -411,7 +418,7 @@
         // Caso o cursor saia do card dentro de um intervalo de 1 segundo, o card não vira
         item.addEventListener("mouseleave", ()=>{
           clearTimeout(timeoutId);
-        })
+        });
       });
     }
     
@@ -461,13 +468,6 @@
     function showResetButton(){
       resetBox.setAttribute("visible", "true");
       resetBox.classList.add("raycastable");
-      
-      resetBox.addEventListener("mouseenter", ()=>{
-        resetBox.setAttribute("visible", "false");
-        resetBox.classList.remove("raycastable");
-        clearBlackboard();
-        newGame();
-      });
     }
     
     function writeBlackboard(card){
