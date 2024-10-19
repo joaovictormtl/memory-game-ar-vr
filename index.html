@@ -72,7 +72,8 @@
           src="img/brain-icon.png"
           width="4"
           height="4"
-          position="0.3 0 1">
+          position="0.3 0 1"
+          visible="true">
         </a-image>
       </a-plane>
       
@@ -95,6 +96,23 @@
           </a-text>
         </a-box>
       
+      <a-box
+        id="resetBox"
+        position="-13 -2.5 -18"
+        width="1.5"
+        height="1.5"
+        depth="0.5"
+        color="#73fc03"
+        visible="false">
+
+        <a-image
+          src="img/reset-icon.png"
+          position="0.2 0 0.5"
+          width="1"
+          height="1">
+        </a-image>
+      </a-box>
+      
       <a-entity id="game-container" position="0 3 -18"></a-entity>
     </a-scene>
   </body>
@@ -106,11 +124,12 @@
     const gameButton = document.querySelector("a-cylinder#gameButton");
     const powerIcon = document.querySelector("a-image#powerIcon");
     const blackboard = document.querySelector("a-plane#blackboard");
+    const resetBox = document.querySelector("a-box#resetBox");
     const boxTime = document.querySelector("a-box#boxTime");
     let gameTime = document.querySelector("a-text#gameTime");
     let intervalTempo;
-    let tempo = 2;
-    let cardBefore;
+    let tempo = 15;
+    let cardBefore = null;
     
     // Todos as informações para preencher a blackboard conforme o card específico
     const cardsDefinitions = [
@@ -185,7 +204,7 @@
       
         setTimeout(()=>{
           title.setAttribute("visible", "false");
-          initialInterface.parentNode.removeChild(initialInterface);
+          initialInterface.remove();
           
           blackboard.setAttribute("animation", {
             property: "color",
@@ -197,14 +216,61 @@
             boxTime.setAttribute("visible", "true");
           }, 1000);
         
-          criarBoxes();
+          newGame();
         }, 1300);
       });
     });
     
-    function criarBoxes(){
-      const items = [];
-      
+    function resetGame(){
+      return new Promise((resolve)=>{
+        blackboard.setAttribute("animation", {
+          property: "color",
+          to: "#fff0c7",
+          dur: 1000
+        });
+        
+      // Revela o brain-icon, para que a blackboard não fique vazia
+        setTimeout(()=>{
+          blackboard.querySelector("a-image").setAttribute("visible", "true");
+        }, 500);
+
+
+        let cards = gameContainer.querySelectorAll(".item");
+
+        let tamanho = 11;
+        let intervalApagar = setInterval(()=>{
+          cards[tamanho].setAttribute("animation", {
+            property: "material.opacity",
+            to: 0,
+            dur: 150
+          })
+
+          cards[tamanho].querySelector("a-image").setAttribute("animation", {
+            property: "material.opacity",
+            to: 0,
+            dur: 200
+          });
+
+          tamanho--;
+
+          if(tamanho < 0){
+            clearInterval(intervalApagar);
+
+            //Excluir os cards (com um atraso de 300, para dar tempo do último card sumir antes de ser excluído)
+            setTimeout(()=>{
+              while(gameContainer.firstChild){
+                gameContainer.removeChild(gameContainer.firstChild);
+              }
+              
+              resolve();
+            }, 150);
+
+          }
+        }, 150); 
+      });
+    }
+    
+    function newGame(){      
       let imgs = [
       "img/card-js.png",
       "img/card-python.png",
@@ -220,9 +286,23 @@
       "img/card-react.png"
       ].sort(function() { return 0.5 - Math.random() });
       
+      if(gameContainer.innerHTML == ""){
+        createCards(imgs);
+      } else{
+        resetGame()
+          .then(()=>{
+            createCards(imgs);
+        });
+      }
+      
+    }
+    
+    function createCards(imgs){
+      const items = [];
+      
       imgs.forEach((img, index)=>{
         const aBox = document.createElement("a-box");
-        aBox.setAttribute("class", "item raycastable");
+        aBox.setAttribute("class", "item");
         aBox.setAttribute("width", "2");
         aBox.setAttribute("height", "2");
         aBox.setAttribute("color", "#c1c1c1")
@@ -275,7 +355,15 @@
                 dur: 500
               }); 
             }
+            
+            for(item of items){
+              item.classList.add("raycastable");
+            }
+            
+            tempo = 15;
             addEventoMouse();
+            cardBefore = null;
+            clearInterval(intervalTempo);
             iniciaTempo();
           }, 500);
         }
@@ -316,7 +404,6 @@
               setTimeout(()=>{
                 addStyle([item, cardBefore]);
               }, 1000);
-
             }
           }, 1000);                  
         });
@@ -330,22 +417,20 @@
     
     function iniciaTempo(){
       // Tempo do Jogo
-        intervalTempo = setInterval(()=>{
-          gameTime.setAttribute("value", `${tempo}`)
-          tempo--;
-          
-          if(tempo < 0){
-            clearInterval(intervalTempo);
-            looseGame();
-          }
-        }, 1000);
+      intervalTempo = setInterval(()=>{
+        gameTime.setAttribute("value", `${tempo}`);
+        tempo--;
+
+        if(tempo < 0){
+          clearInterval(intervalTempo);
+          looseGame();
+        }
+      }, 1000);
     }
     
     function looseGame(){
       // Esvazia a blackboard
-      while(blackboard.firstChild){
-          blackboard.removeChild(blackboard.firstChild);
-      }
+      clearBlackboard();
       
       blackboard.setAttribute("animation", {
         property: "color",
@@ -357,7 +442,6 @@
       // Atrasa a criação em 300
       setTimeout(()=>{
         const failureText = document.createElement("a-text");
-        failureText.setAttribute("id", "failureTextId");
         failureText.setAttribute("color", "#eee");
         failureText.setAttribute("value", "Voce Perdeu...");
         failureText.setAttribute("scale", "5 5 1");
@@ -367,18 +451,26 @@
       
       
       // Retira a interação com os cards
-      const cards = document.querySelectorAll(".item");
+      let cards = document.querySelectorAll(".item");
       for(card of cards){
         card.classList.remove("raycastable");
       }
+      showResetButton(); 
+    }
+    
+    function showResetButton(){
+      resetBox.setAttribute("visible", "true");
+      resetBox.classList.add("raycastable");
+      
+      resetBox.addEventListener("mouseenter", ()=>{
+        resetBox.classList.remove("raycastable");
+        clearBlackboard();
+        newGame();
+      });
     }
     
     function writeBlackboard(card){
-      if(!blackboard.innerHTML == ""){
-        while(blackboard.firstChild){
-          blackboard.removeChild(blackboard.firstChild);
-        }
-      }
+      clearBlackboard();
       
       const cardSrc = card.querySelector("a-image").getAttribute("src");
       
@@ -400,6 +492,20 @@
           blackboard.appendChild(aTitle);
           blackboard.appendChild(aDefinition);
         }
+      }
+    }
+    
+    function clearBlackboard(){
+      if(!blackboard.innerHTML == ""){
+        const brain = blackboard.querySelector("a-image");
+        if(brain.getAttribute("visible")){
+          brain.setAttribute("visible", "false");
+        }
+        
+        const textsBlackboard = blackboard.querySelectorAll("a-text");
+        textsBlackboard.forEach(text=>{
+          text.remove();
+        })
       }
     }
 
