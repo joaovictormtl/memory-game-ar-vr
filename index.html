@@ -186,6 +186,13 @@
       resetBox.addEventListener("mouseenter", ()=>{
         resetBox.setAttribute("visible", "false");
         resetBox.classList.remove("raycastable");
+        
+        blackboard.setAttribute("animation", {
+            property: "color",
+            to: "#fff0c7",
+            dur: 1000
+        });
+        
         clearBlackboard();
         newGame();
       });
@@ -369,7 +376,7 @@
             }
             
             cardBefore = null;
-            tempo = 15;
+            tempo = 60;
             clearInterval(intervalTempo);
             addEventoMouse();
             iniciaTempo();
@@ -499,6 +506,7 @@
     function clearBlackboard(){
       if(!blackboard.innerHTML == ""){
         const brain = blackboard.querySelector("a-image");
+        
         if(brain.getAttribute("visible")){
           brain.setAttribute("visible", "false");
         }
@@ -535,11 +543,13 @@
       }
       
       if(count == 12){
+        clearBlackboard();
         if(!blackboard.innerHTML == ""){
-          while(blackboard.firstChild){
-            blackboard.removeChild(blackboard.firstChild);
-          }
-          blackboard.setAttribute("color", "#73fc03");
+          blackboard.setAttribute("animation", {
+            property: "color",
+            to: "#73fc03",
+            dur: 300
+          });
           
           const wonText = document.createElement("a-text");
           wonText.setAttribute("color", "#eee");
@@ -549,7 +559,8 @@
         
           blackboard.appendChild(wonText);
         }
-        
+        clearInterval(intervalTempo);
+        showResetButton();
       }
     }
   </script>
