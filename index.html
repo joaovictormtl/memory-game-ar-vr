@@ -197,6 +197,7 @@
         newGame();
       });
       
+      // Adiciona o evento de mouseenter no botão de iniciar
       gameButton.addEventListener("mouseenter", ()=>{
         gameButton.setAttribute("visible", "false");
         powerIcon.setAttribute("visible", "false");
@@ -216,7 +217,8 @@
             to: "-1.1 0 0.5",
             dur: 1000
         });
-      
+        
+        // Faz a tela inicial se ocultar
         setTimeout(()=>{
           title.setAttribute("visible", "false");
           initialInterface.remove();
@@ -417,9 +419,9 @@
 
               setTimeout(()=>{
                 addStyle([item, cardBefore]);
-              }, 1000);
+              }, 600);
             }
-          }, 1000);                  
+          }, 600);                  
         });
         
         // Caso o cursor saia do card dentro de um intervalo de 1 segundo, o card não vira
