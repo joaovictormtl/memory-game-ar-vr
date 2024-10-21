@@ -2,6 +2,6 @@
 Repositório destinado ao projeto AR/VR de um jogo da memória utilizando Aframe.
 
 ## Glitch
-- [Ver no Glitch](https://tasteful-axiomatic-geography.glitch.me)
+- [Ver no Glitch](https://glitch.com/edit/#!/tasteful-axiomatic-geography)
 
 ![App Screenshot](img/memory_game.png)
