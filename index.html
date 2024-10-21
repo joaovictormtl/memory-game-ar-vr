@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 
     <title>Memory Game</title>
@@ -21,7 +20,9 @@
       </a-entity>
       
       <!-- Sky -->
-      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/teste.png?v=1728820905757"></a-sky>
+      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"
+             position="0 0 -200">
+      </a-sky>
       
       <a-plane
         id="initialInterface"
@@ -67,7 +68,7 @@
         color="#333"
         width="14"
         height="10"
-        position="-12.5 0 -13.5">
+        position="-12.5 0 -14.5">
         
         <a-image
           src="img/brain-icon.png"
@@ -80,7 +81,7 @@
       
       <a-box
           id="boxTime"
-          position="-6.5 -2.5 -10"
+          position="-5.5 -2.5 -10"
           width="1.5"
           height="1.5"
           depth="0.5"
@@ -99,7 +100,7 @@
       
       <a-box
         id="resetBox"
-        position="-12 -2.5 -10"
+        position="-11.8 -2.5 -10"
         width="1.5"
         height="1.5"
         depth="0.5"
@@ -114,7 +115,7 @@
         </a-image>
       </a-box>
       
-      <a-entity id="game-container" position="0 3 -11.5"></a-entity>
+      <a-entity id="game-container" position="0 3 -10.5"></a-entity>
     </a-scene>
   </body>
   
