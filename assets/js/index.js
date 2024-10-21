@@ -57,6 +57,11 @@ const cardsDefinitions = [
     src: "img/card-css.png",
     title: "Css",
     definition: "Cascading Style Sheets e um mecanismo para adicionar estilos a uma pagina web, aplicado diretamente nas tags HTML ou ficar contido dentro das tags <style>. Tambem e possivel, adicionar estilos adicionando um link para um arquivo CSS que contem os estilos."
+  },
+  {
+    src: "img/card-kotlin.png",
+    title: "Kotlin",
+    definition: "Kotlin é uma linguagem de programação multiplataforma, orientada a objetos e funcional, concisa e estaticamente tipada, desenvolvida em 2011 pela empresa tcheca JetBrains, que compila para a Máquina virtual Java e também traduzida para a linguagem JavaScript e compilada para código nativo."
   }
 ]
 
@@ -134,7 +139,7 @@ function resetGame(){
 
     let cards = gameContainer.querySelectorAll(".item");
 
-    let tamanho = 15;
+    let tamanho = cards.length - 1;
     let intervalApagar = setInterval(()=>{
       cards[tamanho].setAttribute("animation", {
         property: "material.opacity",
@@ -169,17 +174,21 @@ function resetGame(){
 
 function newGame(){
   let imgs = [
+  "img/card-css.png",
   "img/card-js.png",
   "img/card-python.png",
+  "img/card-kotlin.png",
   "img/card-js.png",
   "img/card-html.png",
   "img/card-npm.png",
   "img/card-angular.png",
   "img/card-npm.png",
+  "img/card-css.png",
   "img/card-sql.png",
   "img/card-react.png",
   "img/card-angular.png",
   "img/card-java.png",
+  "img/card-kotlin.png",
   "img/card-python.png",
   "img/card-sql.png",
   "img/card-java.png",
@@ -428,7 +437,7 @@ function chkWin(){
     if(card.getAttribute("color") == "#73fc03") count++;
   }
 
-  if(count == 16){
+  if(count == cards.length){
     clearBlackboard();
     if(!blackboard.innerHTML == ""){
       blackboard.setAttribute("animation", {
