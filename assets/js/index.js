@@ -92,30 +92,33 @@ window.addEventListener("load", ()=>{
       to: 0,
       dur: 1000
     });
-
-    setTimeout(()=>{
-      title.setAttribute("color", "#eee");
-    }, 500)
-
-    title.setAttribute("animation", {
-        property: "position",
-        to: "-1.1 0 0.5",
-        dur: 1000
-    });
-
+    
+    title.setAttribute("visible", "false");
+    
     // Faz a tela inicial se ocultar
     setTimeout(()=>{
-      title.setAttribute("visible", "false");
+      
       initialInterface.parentNode.removeChild(initialInterface);
-
+            
       blackboard.setAttribute("animation", {
         property: "color",
         to: "#fff0c7",
         dur: 1000
       });
-
+      
+      // Tempo necessário para que a primeira animação da blackboard acabe
       setTimeout(()=>{
-        boxTime.setAttribute("visible", "true");
+        blackboard.setAttribute("animation", {
+          property: "height",
+          to: "15",
+          dur: 500
+        });
+        
+        // Tempo necessário para que o tempo só apareça depois da animação
+        setTimeout(()=>{
+          boxTime.setAttribute("visible", "true");
+        }, 600)
+        
       }, 1000);
 
       newGame();
