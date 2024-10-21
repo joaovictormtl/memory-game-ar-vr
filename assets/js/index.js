@@ -134,7 +134,7 @@ function resetGame(){
 
     let cards = gameContainer.querySelectorAll(".item");
 
-    let tamanho = 11;
+    let tamanho = 15;
     let intervalApagar = setInterval(()=>{
       cards[tamanho].setAttribute("animation", {
         property: "material.opacity",
@@ -172,15 +172,19 @@ function newGame(){
   "img/card-js.png",
   "img/card-python.png",
   "img/card-js.png",
+  "img/card-html.png",
   "img/card-npm.png",
   "img/card-angular.png",
   "img/card-npm.png",
+  "img/card-sql.png",
   "img/card-react.png",
   "img/card-angular.png",
   "img/card-java.png",
   "img/card-python.png",
+  "img/card-sql.png",
   "img/card-java.png",
-  "img/card-react.png"
+  "img/card-react.png",
+  "img/card-html.png"
   ].sort(function() { return 0.5 - Math.random() });
 
   if(gameContainer.innerHTML == ""){
@@ -203,7 +207,7 @@ function createCards(imgs){
     aBox.setAttribute("width", "2");
     aBox.setAttribute("height", "2");
     aBox.setAttribute("color", "#c1c1c1")
-    aBox.setAttribute("position", `${(index % 3) * 2.5 - 2.5} ${-Math.floor(index / 3) * 2.5} 0`);
+    aBox.setAttribute("position", `${(index % 4) * 2.5 - 2.5} ${-Math.floor(index / 4) * 2.5} 0`);
     aBox.setAttribute("rotation", "0 0 0");
     aBox.setAttribute("material", "opacity: 0;");
 
@@ -424,7 +428,7 @@ function chkWin(){
     if(card.getAttribute("color") == "#73fc03") count++;
   }
 
-  if(count == 12){
+  if(count == 16){
     clearBlackboard();
     if(!blackboard.innerHTML == ""){
       blackboard.setAttribute("animation", {
