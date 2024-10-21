@@ -334,7 +334,7 @@ function looseGame(){
 
   blackboard.setAttribute("animation", {
     property: "color",
-    to: "#FF6347",
+    to: "#d6361a",
     dur: 300
   });
 
