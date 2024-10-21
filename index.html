@@ -13,14 +13,16 @@
       <a-entity camera look-controls>
         <a-entity 
           cursor="fuse: true; fuseTimeOut: 2000"
-          geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;" 
+          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02;" 
           material="color: gold; shader: flat;"
           position="0 0 -1"
           raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
       
       <!-- Sky -->
-      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/teste.png?v=1728820905757"></a-sky>
+      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"
+             position="0 0 -200">
+      </a-sky>
       
       <a-plane
         id="initialInterface"
@@ -66,7 +68,7 @@
         color="#333"
         width="14"
         height="10"
-        position="-13 0 -14">
+        position="-12.5 0 -14.5">
         
         <a-image
           src="img/brain-icon.png"
@@ -79,7 +81,7 @@
       
       <a-box
           id="boxTime"
-          position="-6.5 -2.5 -10"
+          position="-5.5 -2.5 -10"
           width="1.5"
           height="1.5"
           depth="0.5"
@@ -98,7 +100,7 @@
       
       <a-box
         id="resetBox"
-        position="-12 -2.5 -10"
+        position="-11.8 -2.5 -10"
         width="1.5"
         height="1.5"
         depth="0.5"
@@ -113,7 +115,7 @@
         </a-image>
       </a-box>
       
-      <a-entity id="game-container" position="0 3 -11.5"></a-entity>
+      <a-entity id="game-container" position="0 3 -10.5"></a-entity>
     </a-scene>
   </body>
   
