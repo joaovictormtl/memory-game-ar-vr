@@ -101,7 +101,7 @@ window.addEventListener("load", ()=>{
     // Faz a tela inicial se ocultar
     setTimeout(()=>{
       title.setAttribute("visible", "false");
-      initialInterface.remove();
+      initialInterface.parentNode.removeChild(initialInterface);
 
       blackboard.setAttribute("animation", {
         property: "color",
