@@ -481,26 +481,31 @@ function showScore(){
   clearBlackboard();
   
   const scoreContainer = document.createElement("a-entity");
-  scoreContainer.setAttribute("posiiton", "-0.5 2 0");
+  scoreContainer.setAttribute("position", "-2 1 0");
   
   const title = document.createElement("a-text");
   title.setAttribute("value", "Score");
   title.setAttribute("scale", "7 7 1");
-  title.setAttribute("position", "-3 2.5 1");
+  title.setAttribute("position", "0 2.5 1");
   
   const acertos = document.createElement("a-text");
   acertos.setAttribute("value", `Acertos: ${hits}`);
-  acertos.setAttribute("position", "-3 0 1");
+  acertos.setAttribute("position", "0 0 1");
   acertos.setAttribute("scale", "5 5 1");
   
   const erros = document.createElement("a-text");
   erros.setAttribute("value", `Erros: ${errors}`);
-  erros.setAttribute("position", "-3 -1 1");
+  erros.setAttribute("position", "0 -1 1");
   erros.setAttribute("scale", "5 5 1");
+  
+  const tempoJogo = document.createElement("a-text");
+  tempoJogo.setAttribute("value", `Tempo: ${tempo + 1}`);
+  tempoJogo.setAttribute("position", "0 -2 1");
+  tempoJogo.setAttribute("scale", "5 5 1");
   
   scoreContainer.appendChild(title);
   scoreContainer.appendChild(acertos);
   scoreContainer.appendChild(erros);
+  scoreContainer.appendChild(tempoJogo);
   blackboard.appendChild(scoreContainer);
-  
 }
