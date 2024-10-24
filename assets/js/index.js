@@ -104,7 +104,7 @@ window.addEventListener("load", ()=>{
     // Faz a tela inicial se ocultar
     setTimeout(()=>{
       
-      initialInterface.parentNode.removeChild(initialInterface);
+      initialInterface.remove();
             
       blackboard.setAttribute("animation", {
         property: "color",
@@ -291,7 +291,7 @@ function createCards(imgs){
         }
 
         cardBefore = null;
-        tempo = 60;
+        tempo = 80;
         clearInterval(intervalTempo);
         addEventoMouse();
         iniciaTempo();
@@ -378,7 +378,7 @@ function looseGame(){
     failureText.setAttribute("shader", "msdf");
     failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
     failureText.setAttribute("scale", "5 5 1");
-    failureText.setAttribute("position", "-3 -0.2 1");
+    failureText.setAttribute("position", "-3 -0.3 1");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -481,7 +481,7 @@ function chkWin(){
       wonText.setAttribute("shader", "msdf");
       wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
       wonText.setAttribute("scale", "5 5 1");
-      wonText.setAttribute("position", "-2 0 1");
+      wonText.setAttribute("position", "-2 -0.3 1");
 
       blackboard.appendChild(wonText);
     }
