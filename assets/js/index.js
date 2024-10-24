@@ -10,6 +10,8 @@ let gameTime = document.querySelector("a-text#gameTime");
 let intervalTempo;
 let tempo;
 let cardBefore = null;
+let hits = 0;
+let errors = 0;
 
 // Todos as informações para preencher a blackboard conforme o card específico
 const cardsDefinitions = [
@@ -77,7 +79,9 @@ window.addEventListener("load", ()=>{
         to: "#fff0c7",
         dur: 1000
     });
-
+    
+    hits = 0;
+    errors = 0;
     clearBlackboard();
     newGame();
   });
@@ -307,10 +311,12 @@ function addEventoMouse(){
           item.setAttribute("color", "#73fc03");
           cardBefore.setAttribute("color", "#73fc03");
           cardBefore = null;
+          hits++;
           writeBlackboard(item);
           chkWin();
         }
         else{
+          errors++;
           item.setAttribute("color", "tomato");
 
           setTimeout(()=>{
@@ -357,7 +363,7 @@ function looseGame(){
     failureText.setAttribute("color", "#eee");
     failureText.setAttribute("value", "Voce Perdeu...");
     failureText.setAttribute("scale", "5 5 1");
-    failureText.setAttribute("position", "-3.5 0 1");
+    failureText.setAttribute("position", "-3 0 1");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -367,6 +373,11 @@ function looseGame(){
   for(let card of cards){
     card.classList.remove("raycastable");
   }
+  
+  setTimeout(()=>{
+    showScore();
+  }, 3000);
+  
   showResetButton(); 
 }
 
@@ -458,6 +469,43 @@ function chkWin(){
       blackboard.appendChild(wonText);
     }
     clearInterval(intervalTempo);
+    
+    setTimeout(()=>{
+      showScore();
+    }, 3000);
     showResetButton();
   }
+}
+
+function showScore(){
+  clearBlackboard();
+  
+  const scoreContainer = document.createElement("a-entity");
+  scoreContainer.setAttribute("position", "-2 1 0");
+  
+  const title = document.createElement("a-text");
+  title.setAttribute("value", "Score");
+  title.setAttribute("scale", "7 7 1");
+  title.setAttribute("position", "0 2.5 1");
+  
+  const acertos = document.createElement("a-text");
+  acertos.setAttribute("value", `Acertos: ${hits}`);
+  acertos.setAttribute("position", "0 0 1");
+  acertos.setAttribute("scale", "5 5 1");
+  
+  const erros = document.createElement("a-text");
+  erros.setAttribute("value", `Erros: ${errors}`);
+  erros.setAttribute("position", "0 -1 1");
+  erros.setAttribute("scale", "5 5 1");
+  
+  const tempoJogo = document.createElement("a-text");
+  tempoJogo.setAttribute("value", `Tempo: ${tempo + 1}`);
+  tempoJogo.setAttribute("position", "0 -2 1");
+  tempoJogo.setAttribute("scale", "5 5 1");
+  
+  scoreContainer.appendChild(title);
+  scoreContainer.appendChild(acertos);
+  scoreContainer.appendChild(erros);
+  scoreContainer.appendChild(tempoJogo);
+  blackboard.appendChild(scoreContainer);
 }
