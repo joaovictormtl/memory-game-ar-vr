@@ -1,6 +1,7 @@
 const gameContainer = document.querySelector("#game-container");
 const initialInterface = document.querySelector("a-plane#initialInterface");
 const title = document.querySelector("a-text#title");
+const subTitle = document.querySelector("a-text#subTitle");
 const gameButton = document.querySelector("a-cylinder#gameButton");
 const powerIcon = document.querySelector("a-image#powerIcon");
 const blackboard = document.querySelector("a-plane#blackboard");
@@ -98,6 +99,7 @@ window.addEventListener("load", ()=>{
     });
     
     title.setAttribute("visible", "false");
+    subTitle.setAttribute("visible", "false");
     
     // Faz a tela inicial se ocultar
     setTimeout(()=>{
@@ -112,12 +114,6 @@ window.addEventListener("load", ()=>{
       
       // Tempo necessário para que a primeira animação da blackboard acabe
       setTimeout(()=>{
-        // blackboard.setAttribute("animation", {
-        //   property: "height",
-        //   to: "15",
-        //   dur: 500
-        // });
-        
         setTimeout(()=>{
           blackboard.setAttribute("animation", {
             property: "position",
@@ -379,8 +375,10 @@ function looseGame(){
     const failureText = document.createElement("a-text");
     failureText.setAttribute("color", "#eee");
     failureText.setAttribute("value", "Voce Perdeu...");
+    failureText.setAttribute("shader", "msdf");
+    failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
     failureText.setAttribute("scale", "5 5 1");
-    failureText.setAttribute("position", "-3 0 1");
+    failureText.setAttribute("position", "-3 -0.2 1");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -480,6 +478,8 @@ function chkWin(){
       const wonText = document.createElement("a-text");
       wonText.setAttribute("color", "#eee");
       wonText.setAttribute("value", "Parabens!");
+      wonText.setAttribute("shader", "msdf");
+      wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
       wonText.setAttribute("scale", "5 5 1");
       wonText.setAttribute("position", "-2 0 1");
 
@@ -498,29 +498,37 @@ function showScore(){
   clearBlackboard();
   
   const scoreContainer = document.createElement("a-entity");
-  scoreContainer.setAttribute("position", "-2 1 0");
+  scoreContainer.setAttribute("position", "-2 0 0");
   
-  const title = document.createElement("a-text");
-  title.setAttribute("value", "Score");
-  title.setAttribute("scale", "7 7 1");
-  title.setAttribute("position", "0 2.5 1");
+  const titleScore = document.createElement("a-text");
+  titleScore.setAttribute("shader", "msdf");
+  titleScore.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
+  titleScore.setAttribute("value", "Score");
+  titleScore.setAttribute("scale", "7 7 1");
+  titleScore.setAttribute("position", "0 1 1");
   
   const acertos = document.createElement("a-text");
   acertos.setAttribute("value", `Acertos: ${hits}`);
-  acertos.setAttribute("position", "0 0 1");
-  acertos.setAttribute("scale", "5 5 1");
+  acertos.setAttribute("position", "0 -1 1");
+  acertos.setAttribute("scale", "4 4 1");
+  acertos.setAttribute("shader", "msdf");
+  acertos.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const erros = document.createElement("a-text");
   erros.setAttribute("value", `Erros: ${errors}`);
-  erros.setAttribute("position", "0 -1 1");
-  erros.setAttribute("scale", "5 5 1");
+  erros.setAttribute("position", "0 -2 1");
+  erros.setAttribute("scale", "4 4 1");
+  erros.setAttribute("shader", "msdf");
+  erros.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const tempoJogo = document.createElement("a-text");
   tempoJogo.setAttribute("value", `Tempo: ${tempo + 1}`);
-  tempoJogo.setAttribute("position", "0 -2 1");
-  tempoJogo.setAttribute("scale", "5 5 1");
+  tempoJogo.setAttribute("position", "0 -3 1");
+  tempoJogo.setAttribute("scale", "4 4 1");
+  tempoJogo.setAttribute("shader", "msdf");
+  tempoJogo.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
-  scoreContainer.appendChild(title);
+  scoreContainer.appendChild(titleScore);
   scoreContainer.appendChild(acertos);
   scoreContainer.appendChild(erros);
   scoreContainer.appendChild(tempoJogo);

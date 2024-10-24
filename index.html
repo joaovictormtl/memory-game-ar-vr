@@ -22,8 +22,8 @@
       <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"
              position="0 0 -200">
       </a-sky>
-      
-      <a-plane
+        
+       <a-plane
         id="initialInterface"
         position="0 0 -5"
         width="6"
@@ -32,11 +32,22 @@
         
         <a-text
           id="title"
-          value="Memory
-                 Game"
+          value="Memory Game"
           position="-2.2 0 0.5"
-          scale="2.5 2.5 1"
-          color="#000">
+          scale="2.8 2.8 1"
+          color="#333"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/pressstart2p/PressStart2P-Regular.json">
+        </a-text>
+         
+        <a-text
+          id="subTitle"
+          value="Realidade Aumentada (AR)"
+          color="#333"
+          position="-2.2 -0.3 0.5"
+          scale="1 0.8 1"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/abel/Abel-Regular.json">
         </a-text>
         
         <a-entity position="1 0 0">
@@ -66,7 +77,7 @@
         id="blackboard"
         color="#333"
         width="14"
-        height="10"
+        height="11"
         position="-12.5 0 -14.5">
         
         <a-image
