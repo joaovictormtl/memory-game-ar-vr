@@ -112,16 +112,33 @@ window.addEventListener("load", ()=>{
       
       // Tempo necessário para que a primeira animação da blackboard acabe
       setTimeout(()=>{
-        blackboard.setAttribute("animation", {
-          property: "height",
-          to: "15",
-          dur: 500
-        });
+        // blackboard.setAttribute("animation", {
+        //   property: "height",
+        //   to: "15",
+        //   dur: 500
+        // });
+        
+        setTimeout(()=>{
+          blackboard.setAttribute("animation", {
+            property: "position",
+            to: "-14.5 1 -10",
+            dur: 500
+          });
+        }, 700);
+        
+        setTimeout(()=>{
+          blackboard.setAttribute("animation", {
+            property: "rotation",
+            to: "0 40 0",
+            dur: 500
+          });
+        }, 1200);
+        
         
         // Tempo necessário para que o tempo só apareça depois da animação
         setTimeout(()=>{
           boxTime.setAttribute("visible", "true");
-        }, 600)
+        }, 1400)
         
       }, 1000);
 
@@ -395,14 +412,14 @@ function writeBlackboard(card){
     if(cardSrc == src){
       const aTitle = document.createElement("a-text");
       aTitle.setAttribute("value", `${title}`);
-      aTitle.setAttribute("position", "-0.5 3 1");
+      aTitle.setAttribute("position", "-1.5 3 1");
       aTitle.setAttribute("color", "#000");
-      aTitle.setAttribute("scale", "3.5 3.5 1");
+      aTitle.setAttribute("scale", "4 4 1");
 
       const aDefinition = document.createElement("a-text");
       aDefinition.setAttribute("color", "#000");
-      aDefinition.setAttribute("position", "-4.5 0 1");
-      aDefinition.setAttribute("scale", "2 2 1");
+      aDefinition.setAttribute("position", "-6 0 1");
+      aDefinition.setAttribute("scale", "2.5 2.5 1");
       aDefinition.setAttribute("value", `${definition}`);
       aDefinition.setAttribute("lineHeight", "60")
 
