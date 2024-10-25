@@ -74,6 +74,7 @@ window.addEventListener("load", ()=>{
   resetBox.addEventListener("mouseenter", ()=>{
     resetBox.setAttribute("visible", "false");
     resetBox.classList.remove("raycastable");
+    blackboard.querySelector("a-plane").remove();
     
     hits = 0;
     errors = 0;
@@ -376,8 +377,8 @@ function looseGame(){
     failureText.setAttribute("value", "Voce\nPerdeu");
     failureText.setAttribute("shader", "msdf");
     failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
-    failureText.setAttribute("scale", "3.5 3.5 1");
-    failureText.setAttribute("position", "-1.7 -0.3 0");
+    failureText.setAttribute("scale", "3 3 1");
+    failureText.setAttribute("position", "-1.65 -0.3 0");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -482,7 +483,7 @@ function chkWin(){
       wonText.setAttribute("value", "Parabens!");
       wonText.setAttribute("shader", "msdf");
       wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
-      wonText.setAttribute("scale", "3.5 3.5 1");
+      wonText.setAttribute("scale", "3 3 1");
       wonText.setAttribute("position", "-1.8 -0.3 1");
 
       blackboard.appendChild(wonText);
@@ -505,8 +506,16 @@ function showScore(){
     dur: 300
   });
   
+  const scoreBackground = document.createElement("a-plane");
+  scoreBackground.setAttribute("color", "#555");
+  scoreBackground.setAttribute("width", "5");
+  scoreBackground.setAttribute("height", "5");
+  scoreBackground.setAttribute("position", "0 0 0.5");
+  
   const scoreContainer = document.createElement("a-entity");
   scoreContainer.setAttribute("position", "-2 0 -1");
+  
+  scoreBackground.appendChild(scoreContainer);
   
   const titleScore = document.createElement("a-text");
   titleScore.setAttribute("shader", "msdf");
@@ -540,5 +549,5 @@ function showScore(){
   scoreContainer.appendChild(acertos);
   scoreContainer.appendChild(erros);
   scoreContainer.appendChild(tempoJogo);
-  blackboard.appendChild(scoreContainer);
+  blackboard.appendChild(scoreBackground);
 }

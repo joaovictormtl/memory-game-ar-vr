@@ -18,13 +18,19 @@
           raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
       
-      <!-- Sky -->
-<!--       <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"
-             position="0 0 -200">
-      </a-sky> -->
       <a-sky color="#445"></a-sky>
-        
-       <a-plane
+      
+      <a-light type="ambient" color="#ffffff" intensity="1"></a-light>
+      
+      <a-sphere position="-10 6 -8.5" radius="0.3" color="#fcd072" 
+          light="type: point; intensity: 5; distance: 20; decay: 2; color: #ffdda1">
+      </a-sphere>
+      
+      <a-plane position="-10.1 6.1 -8.6" rotation="0 40 0" width="5" height="5" 
+           material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/luz_sol.png?v=1729880844284; transparent: true; opacity: 0.5;">
+      </a-plane>
+
+      <a-plane
         id="initialInterface"
         position="0 0 -5"
         width="6"
@@ -96,7 +102,7 @@
           width="9.5"
           height="1.5"
           depth="0.5"
-          color="red"
+          color="#d40202"
           visible="false">
           
           <a-text
@@ -130,6 +136,7 @@
       
       <a-entity id="game-container" position="-1.35 5 -10.5"></a-entity>
     </a-scene>
+    
   </body>
   
   <script src="./assets/js/index.js"></script>
