@@ -1,6 +1,7 @@
 const gameContainer = document.querySelector("#game-container");
 const initialInterface = document.querySelector("a-plane#initialInterface");
 const title = document.querySelector("a-text#title");
+const subTitle = document.querySelector("a-text#subTitle");
 const gameButton = document.querySelector("a-cylinder#gameButton");
 const powerIcon = document.querySelector("a-image#powerIcon");
 const blackboard = document.querySelector("a-plane#blackboard");
@@ -73,12 +74,7 @@ window.addEventListener("load", ()=>{
   resetBox.addEventListener("mouseenter", ()=>{
     resetBox.setAttribute("visible", "false");
     resetBox.classList.remove("raycastable");
-
-    blackboard.setAttribute("animation", {
-        property: "color",
-        to: "#fff0c7",
-        dur: 1000
-    });
+    blackboard.querySelector("a-plane").remove();
     
     hits = 0;
     errors = 0;
@@ -90,55 +86,72 @@ window.addEventListener("load", ()=>{
   gameButton.addEventListener("mouseenter", ()=>{
     gameButton.setAttribute("visible", "false");
     powerIcon.setAttribute("visible", "false");
-
+    title.setAttribute("visible", "false");
+    subTitle.setAttribute("visible", "false");
+    
+    // Faz a initialInterface sumir
     initialInterface.setAttribute("animation", {
       property: "material.opacity",
       to: 0,
-      dur: 1000
+      dur: 500
     });
     
-    title.setAttribute("visible", "false");
-    
-    // Faz a tela inicial se ocultar
     setTimeout(()=>{
+      // Remove a initialInterface
+      initialInterface.remove();
       
-      initialInterface.parentNode.removeChild(initialInterface);
-            
-      blackboard.setAttribute("animation", {
-        property: "color",
-        to: "#fff0c7",
-        dur: 1000
+      // Rotaciona a blackboard
+       blackboard.setAttribute("animation", {
+        property: "rotation",
+        to: "0 40 0",
+        dur: 700
       });
       
-      // Tempo necessário para que a primeira animação da blackboard acabe
       setTimeout(()=>{
+        // Posiciona a blackboard
         blackboard.setAttribute("animation", {
-          property: "height",
-          to: "15",
-          dur: 500
+          property: "position",
+          to: "-6.3 0 -5",
+          dur: 700
         });
         
-        // Tempo necessário para que o tempo só apareça depois da animação
         setTimeout(()=>{
-          boxTime.setAttribute("visible", "true");
-        }, 600)
+          // Atraso para o tempo aparecer um pouco depois da animação do início do jogo
+          setTimeout(()=>{
+            boxTime.setAttribute("visible", "true");
+          }, 1300);
+          
+          // Atraso para que a animação de início do jogo aconteça depois da animação da blackboard
+          newGame();
+        }, 1000);
         
-      }, 1000);
-
-      newGame();
-    }, 1300);
+      }, 1200)
+      
+    }, 800);
+    
   });
 });
 
 function resetGame(){
   return new Promise((resolve)=>{
+    
     blackboard.setAttribute("animation", {
       property: "color",
-      to: "#fff0c7",
-      dur: 1000
+      to: "#333",
+      dur: 300
     });
-
-  // Revela o brain-icon, para que a blackboard não fique vazia
+    
+    // Atraso para que a animação de mudança de cor termine
+    setTimeout(()=>{
+      blackboard.setAttribute("animation", {
+        property: "material.opacity",
+        to: "1",
+        dur: 300
+      });
+    }, 500)
+    
+    
+    // Revela o brain-icon, para que a blackboard não fique vazia
     setTimeout(()=>{
       blackboard.querySelector("a-image").setAttribute("visible", "true");
     }, 500);
@@ -222,7 +235,7 @@ function createCards(imgs){
     aBox.setAttribute("class", "item");
     aBox.setAttribute("width", "2");
     aBox.setAttribute("height", "2");
-    aBox.setAttribute("color", "#c1c1c1")
+    aBox.setAttribute("color", "#79798c")
     aBox.setAttribute("position", `${(index % 4) * 2.5 - 2.5} ${-Math.floor(index / 4) * 2.5} 0`);
     aBox.setAttribute("rotation", "0 0 0");
     aBox.setAttribute("material", "opacity: 0;");
@@ -278,7 +291,7 @@ function createCards(imgs){
         }
 
         cardBefore = null;
-        tempo = 60;
+        tempo = 80;
         clearInterval(intervalTempo);
         addEventoMouse();
         iniciaTempo();
@@ -361,9 +374,11 @@ function looseGame(){
   setTimeout(()=>{
     const failureText = document.createElement("a-text");
     failureText.setAttribute("color", "#eee");
-    failureText.setAttribute("value", "Voce Perdeu...");
-    failureText.setAttribute("scale", "5 5 1");
-    failureText.setAttribute("position", "-3 0 1");
+    failureText.setAttribute("value", "Voce\nPerdeu");
+    failureText.setAttribute("shader", "msdf");
+    failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
+    failureText.setAttribute("scale", "3 3 1");
+    failureText.setAttribute("position", "-1.4 -0.5 0");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -395,16 +410,19 @@ function writeBlackboard(card){
     if(cardSrc == src){
       const aTitle = document.createElement("a-text");
       aTitle.setAttribute("value", `${title}`);
-      aTitle.setAttribute("position", "-0.5 3 1");
-      aTitle.setAttribute("color", "#000");
-      aTitle.setAttribute("scale", "3.5 3.5 1");
+      aTitle.setAttribute("position", "-1 2 0");
+      aTitle.setAttribute("color", "#fff");
+      aTitle.setAttribute("scale", "3 3 1");
+      aTitle.setAttribute("shader", "msdf");
+      aTitle.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
 
       const aDefinition = document.createElement("a-text");
-      aDefinition.setAttribute("color", "#000");
-      aDefinition.setAttribute("position", "-4.5 0 1");
-      aDefinition.setAttribute("scale", "2 2 1");
+      aDefinition.setAttribute("color", "#fff");
+      aDefinition.setAttribute("anchor", "center");
+      aDefinition.setAttribute("scale", "2.5 2.5 1");
       aDefinition.setAttribute("value", `${definition}`);
-      aDefinition.setAttribute("lineHeight", "60")
+      aDefinition.setAttribute("width", "2");
+      aDefinition.setAttribute("height", "3");
 
       blackboard.appendChild(aTitle);
       blackboard.appendChild(aDefinition);
@@ -436,7 +454,7 @@ function addStyle(elems){
     });
 
     setTimeout(()=>{
-      el.setAttribute("color", "#c1c1c1");
+      el.setAttribute("color", "#79798c");
       el.classList.add("raycastable");
       cardBefore = null;
     }, 800 * elems.lenght);
@@ -463,8 +481,10 @@ function chkWin(){
       const wonText = document.createElement("a-text");
       wonText.setAttribute("color", "#eee");
       wonText.setAttribute("value", "Parabens!");
-      wonText.setAttribute("scale", "5 5 1");
-      wonText.setAttribute("position", "-2 0 1");
+      wonText.setAttribute("shader", "msdf");
+      wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
+      wonText.setAttribute("scale", "3 3 1");
+      wonText.setAttribute("position", "-1.6 -0.5 1");
 
       blackboard.appendChild(wonText);
     }
@@ -480,32 +500,62 @@ function chkWin(){
 function showScore(){
   clearBlackboard();
   
-  const scoreContainer = document.createElement("a-entity");
-  scoreContainer.setAttribute("position", "-2 1 0");
+  blackboard.setAttribute("animation", {
+    property: "material.opacity",
+    to: "0.3",
+    dur: 300
+  });
   
-  const title = document.createElement("a-text");
-  title.setAttribute("value", "Score");
-  title.setAttribute("scale", "7 7 1");
-  title.setAttribute("position", "0 2.5 1");
+  const scoreBackground = document.createElement("a-plane");
+  scoreBackground.setAttribute("color", "#555");
+  scoreBackground.setAttribute("width", "4.9");
+  scoreBackground.setAttribute("height", "4.9");
+  scoreBackground.setAttribute("position", "0 0 0.5");
+  
+  const contorno = document.createElement("a-image");
+  contorno.setAttribute("src", "https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/contorno_blackboard.png?v=1729883206523");
+  contorno.setAttribute("width", "5");
+  contorno.setAttribute("height", "5");
+  contorno.setAttribute("position", " 0 0 0.1");
+  scoreBackground.appendChild(contorno);
+  
+  const scoreContainer = document.createElement("a-entity");
+  scoreContainer.setAttribute("position", "-2 0 -0.5");
+  
+  scoreBackground.appendChild(scoreContainer);
+  
+  const titleScore = document.createElement("a-text");
+  titleScore.setAttribute("shader", "msdf");
+  titleScore.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
+  titleScore.setAttribute("value", "Score");
+  titleScore.setAttribute("scale", "7 7 1");
+  titleScore.setAttribute("position", "0 0.7 1");
+  titleScore.setAttribute("color", "#e8ac2c");
   
   const acertos = document.createElement("a-text");
   acertos.setAttribute("value", `Acertos: ${hits}`);
   acertos.setAttribute("position", "0 0 1");
-  acertos.setAttribute("scale", "5 5 1");
+  acertos.setAttribute("scale", "3 3 1");
+  acertos.setAttribute("shader", "msdf");
+  acertos.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const erros = document.createElement("a-text");
   erros.setAttribute("value", `Erros: ${errors}`);
   erros.setAttribute("position", "0 -1 1");
-  erros.setAttribute("scale", "5 5 1");
+  erros.setAttribute("scale", "3 3 1");
+  erros.setAttribute("shader", "msdf");
+  erros.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const tempoJogo = document.createElement("a-text");
   tempoJogo.setAttribute("value", `Tempo: ${tempo + 1}`);
   tempoJogo.setAttribute("position", "0 -2 1");
-  tempoJogo.setAttribute("scale", "5 5 1");
+  tempoJogo.setAttribute("scale", "3 3 1");
+  tempoJogo.setAttribute("shader", "msdf");
+  tempoJogo.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
-  scoreContainer.appendChild(title);
+  scoreContainer.appendChild(titleScore);
   scoreContainer.appendChild(acertos);
   scoreContainer.appendChild(erros);
   scoreContainer.appendChild(tempoJogo);
-  blackboard.appendChild(scoreContainer);
+  blackboard.appendChild(scoreBackground);
 }

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-
     <title>Memory Game</title>
   </head>
   <body style="overflow: hidden;">
@@ -19,11 +18,29 @@
           raycaster="objects: .raycastable;"></a-entity>
       </a-entity>
       
-      <!-- Sky -->
-      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"
-             position="0 0 -200">
-      </a-sky>
+      <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"></a-sky>
       
+      <a-light type="ambient" color="#ffffff" intensity="1"></a-light>
+      
+      <!-- Sol -->
+      <a-sphere position="-10 6 -8.5" radius="0.3" color="#ffda8c" 
+          light="type: point; intensity: 5; distance: 20; decay: 2; color: #ffdda1">
+      </a-sphere>
+      
+      <!-- Luz Solar -->
+      <a-plane position="-10.1 6.1 -8.6" rotation="0 40 0" width="5" height="5" 
+           material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/luz_sol.png?v=1729880844284; transparent: true; opacity: 0.5;">
+      </a-plane>
+      
+      <a-sphere position="10 6 -8.5" radius="0.3" color="#F08CFF" rotation=" 0 20 0" 
+          light="type: point; intensity: 5; distance: 20; decay: 2; color: #f08cff">
+      </a-sphere>
+      
+      <a-plane position="10.1 6.1 -8.6" rotation="20 -20 0" width="5" height="5" 
+           material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/luz_magenta.png?v=1729882585781; transparent: true; opacity: 0.5;">
+      </a-plane>
+      
+
       <a-plane
         id="initialInterface"
         position="0 0 -5"
@@ -33,11 +50,22 @@
         
         <a-text
           id="title"
-          value="Memory
-                 Game"
+          value="Memory Game"
           position="-2.2 0 0.5"
-          scale="2.5 2.5 1"
-          color="#000">
+          scale="2.8 2.8 1"
+          color="#333"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/pressstart2p/PressStart2P-Regular.json">
+        </a-text>
+         
+        <a-text
+          id="subTitle"
+          value="Realidade Aumentada (AR)"
+          color="#333"
+          position="-2.2 -0.3 0.5"
+          scale="1 0.8 1"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/abel/Abel-Regular.json">
         </a-text>
         
         <a-entity position="1 0 0">
@@ -66,45 +94,47 @@
       <a-plane
         id="blackboard"
         color="#333"
-        width="14"
-        height="10"
-        position="-12.5 0 -14.5">
+        width="6"
+        height="4"
+        position="-4 0 -5.3">
         
         <a-image
           src="img/brain-icon.png"
-          width="4"
-          height="4"
-          position="0.9 0 1"
+          width="1.5"
+          height="1.5"
+          position="0 0 1"
           visible="true">
         </a-image>
       </a-plane>
       
       <a-box
           id="boxTime"
-          position="-5.5 -3.5 -10"
-          width="1.5"
+          position="0 7 -10"
+          width="9.5"
           height="1.5"
           depth="0.5"
-          color="red"
+          color="#d40202"
           visible="false">
           
           <a-text
             id="gameTime"
-            value="60"
-            position="0.1 0 0.5"
+            value="80"
+            position="0.1 -0.7 0.5"
             align="center"
             scale="3 3 1"
-            color="#eee">
+            color="#eee"
+            shader="msdf"
+            font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/kanit/Kanit-Regular.json">
           </a-text>
         </a-box>
       
       <a-box
         id="resetBox"
-        position="-11.8 -3.5 -10"
-        width="1.5"
+        position="0 -7 -10"
+        width="9.3"
         height="1.5"
         depth="0.5"
-        color="#73fc03"
+        color="#5bc202"
         visible="false">
 
         <a-image
@@ -115,8 +145,9 @@
         </a-image>
       </a-box>
       
-      <a-entity id="game-container" position="0 5 -10.5"></a-entity>
+      <a-entity id="game-container" position="-1.35 5 -10.5"></a-entity>
     </a-scene>
+    
   </body>
   
   <script src="./assets/js/index.js"></script>
