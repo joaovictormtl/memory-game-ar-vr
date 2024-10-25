@@ -74,12 +74,6 @@ window.addEventListener("load", ()=>{
   resetBox.addEventListener("mouseenter", ()=>{
     resetBox.setAttribute("visible", "false");
     resetBox.classList.remove("raycastable");
-
-    blackboard.setAttribute("animation", {
-        property: "color",
-        to: "#fff0c7",
-        dur: 1000
-    });
     
     hits = 0;
     errors = 0;
@@ -91,67 +85,72 @@ window.addEventListener("load", ()=>{
   gameButton.addEventListener("mouseenter", ()=>{
     gameButton.setAttribute("visible", "false");
     powerIcon.setAttribute("visible", "false");
-
-    initialInterface.setAttribute("animation", {
-      property: "material.opacity",
-      to: 0,
-      dur: 1000
-    });
-    
     title.setAttribute("visible", "false");
     subTitle.setAttribute("visible", "false");
     
-    // Faz a tela inicial se ocultar
+    // Faz a initialInterface sumir
+    initialInterface.setAttribute("animation", {
+      property: "material.opacity",
+      to: 0,
+      dur: 500
+    });
+    
     setTimeout(()=>{
-      
+      // Remove a initialInterface
       initialInterface.remove();
-            
-      blackboard.setAttribute("animation", {
-        property: "color",
-        to: "#fff0c7",
-        dur: 1000
+      
+      // Rotaciona a blackboard
+       blackboard.setAttribute("animation", {
+        property: "rotation",
+        to: "0 40 0",
+        dur: 700
       });
       
-      // Tempo necessário para que a primeira animação da blackboard acabe
       setTimeout(()=>{
-        setTimeout(()=>{
-          blackboard.setAttribute("animation", {
-            property: "position",
-            to: "-14.5 1 -10",
-            dur: 500
-          });
-        }, 700);
+        // Posiciona a blackboard
+        blackboard.setAttribute("animation", {
+          property: "position",
+          to: "-6.3 0 -5",
+          dur: 700
+        });
         
         setTimeout(()=>{
-          blackboard.setAttribute("animation", {
-            property: "rotation",
-            to: "0 40 0",
-            dur: 500
-          });
-        }, 1200);
+          // Atraso para o tempo aparecer um pouco depois da animação do início do jogo
+          setTimeout(()=>{
+            boxTime.setAttribute("visible", "true");
+          }, 1300);
+          
+          // Atraso para que a animação de início do jogo aconteça depois da animação da blackboard
+          newGame();
+        }, 1000);
         
-        
-        // Tempo necessário para que o tempo só apareça depois da animação
-        setTimeout(()=>{
-          boxTime.setAttribute("visible", "true");
-        }, 1400)
-        
-      }, 1000);
-
-      newGame();
-    }, 1300);
+      }, 1200)
+      
+    }, 800);
+    
   });
 });
 
 function resetGame(){
   return new Promise((resolve)=>{
+    
     blackboard.setAttribute("animation", {
       property: "color",
-      to: "#fff0c7",
-      dur: 1000
+      to: "#333",
+      dur: 300
     });
-
-  // Revela o brain-icon, para que a blackboard não fique vazia
+    
+    // Atraso para que a animação de mudança de cor termine
+    setTimeout(()=>{
+      blackboard.setAttribute("animation", {
+        property: "material.opacity",
+        to: "1",
+        dur: 300
+      });
+    }, 500)
+    
+    
+    // Revela o brain-icon, para que a blackboard não fique vazia
     setTimeout(()=>{
       blackboard.querySelector("a-image").setAttribute("visible", "true");
     }, 500);
@@ -235,7 +234,7 @@ function createCards(imgs){
     aBox.setAttribute("class", "item");
     aBox.setAttribute("width", "2");
     aBox.setAttribute("height", "2");
-    aBox.setAttribute("color", "#c1c1c1")
+    aBox.setAttribute("color", "#79798c")
     aBox.setAttribute("position", `${(index % 4) * 2.5 - 2.5} ${-Math.floor(index / 4) * 2.5} 0`);
     aBox.setAttribute("rotation", "0 0 0");
     aBox.setAttribute("material", "opacity: 0;");
@@ -374,11 +373,11 @@ function looseGame(){
   setTimeout(()=>{
     const failureText = document.createElement("a-text");
     failureText.setAttribute("color", "#eee");
-    failureText.setAttribute("value", "Voce Perdeu...");
+    failureText.setAttribute("value", "Voce\nPerdeu");
     failureText.setAttribute("shader", "msdf");
     failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
-    failureText.setAttribute("scale", "5 5 1");
-    failureText.setAttribute("position", "-3 -0.3 1");
+    failureText.setAttribute("scale", "3.5 3.5 1");
+    failureText.setAttribute("position", "-1.7 -0.3 0");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -410,16 +409,19 @@ function writeBlackboard(card){
     if(cardSrc == src){
       const aTitle = document.createElement("a-text");
       aTitle.setAttribute("value", `${title}`);
-      aTitle.setAttribute("position", "-1.5 3 1");
-      aTitle.setAttribute("color", "#000");
-      aTitle.setAttribute("scale", "4 4 1");
+      aTitle.setAttribute("position", "-1 2 0");
+      aTitle.setAttribute("color", "#fff");
+      aTitle.setAttribute("scale", "3 3 1");
+      aTitle.setAttribute("shader", "msdf");
+      aTitle.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
 
       const aDefinition = document.createElement("a-text");
-      aDefinition.setAttribute("color", "#000");
-      aDefinition.setAttribute("position", "-6 0 1");
+      aDefinition.setAttribute("color", "#fff");
+      aDefinition.setAttribute("anchor", "center");
       aDefinition.setAttribute("scale", "2.5 2.5 1");
       aDefinition.setAttribute("value", `${definition}`);
-      aDefinition.setAttribute("lineHeight", "60")
+      aDefinition.setAttribute("width", "2");
+      aDefinition.setAttribute("height", "3");
 
       blackboard.appendChild(aTitle);
       blackboard.appendChild(aDefinition);
@@ -451,7 +453,7 @@ function addStyle(elems){
     });
 
     setTimeout(()=>{
-      el.setAttribute("color", "#c1c1c1");
+      el.setAttribute("color", "#79798c");
       el.classList.add("raycastable");
       cardBefore = null;
     }, 800 * elems.lenght);
@@ -480,8 +482,8 @@ function chkWin(){
       wonText.setAttribute("value", "Parabens!");
       wonText.setAttribute("shader", "msdf");
       wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
-      wonText.setAttribute("scale", "5 5 1");
-      wonText.setAttribute("position", "-2 -0.3 1");
+      wonText.setAttribute("scale", "3.5 3.5 1");
+      wonText.setAttribute("position", "-1.8 -0.3 1");
 
       blackboard.appendChild(wonText);
     }
@@ -497,8 +499,14 @@ function chkWin(){
 function showScore(){
   clearBlackboard();
   
+  blackboard.setAttribute("animation", {
+    property: "material.opacity",
+    to: "0.3",
+    dur: 300
+  });
+  
   const scoreContainer = document.createElement("a-entity");
-  scoreContainer.setAttribute("position", "-2 0 0");
+  scoreContainer.setAttribute("position", "-2 0 -1");
   
   const titleScore = document.createElement("a-text");
   titleScore.setAttribute("shader", "msdf");
