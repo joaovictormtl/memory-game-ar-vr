@@ -376,9 +376,9 @@ function looseGame(){
     failureText.setAttribute("color", "#eee");
     failureText.setAttribute("value", "Voce\nPerdeu");
     failureText.setAttribute("shader", "msdf");
-    failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
+    failureText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
     failureText.setAttribute("scale", "3 3 1");
-    failureText.setAttribute("position", "-1.65 -0.3 0");
+    failureText.setAttribute("position", "-1.4 -0.5 0");
     blackboard.appendChild(failureText);
   }, 300);
 
@@ -482,9 +482,9 @@ function chkWin(){
       wonText.setAttribute("color", "#eee");
       wonText.setAttribute("value", "Parabens!");
       wonText.setAttribute("shader", "msdf");
-      wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
+      wonText.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
       wonText.setAttribute("scale", "3 3 1");
-      wonText.setAttribute("position", "-1.8 -0.3 1");
+      wonText.setAttribute("position", "-1.6 -0.5 1");
 
       blackboard.appendChild(wonText);
     }
