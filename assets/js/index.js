@@ -13,6 +13,7 @@ let tempo;
 let cardBefore = null;
 let hits = 0;
 let errors = 0;
+const star = document.querySelector("a-image#star")
 
 // Todos as informações para preencher a blackboard conforme o card específico
 const cardsDefinitions = [
@@ -70,6 +71,15 @@ const cardsDefinitions = [
 
 // Eventos para os elementos da tela inicial
 window.addEventListener("load", ()=>{
+  // Animação da Estrela
+  setTimeout(()=>{
+    star.setAttribute("animation", {
+      property: "position",
+      to: "-2 3 -12",
+      dur: 1000
+    });
+  }, 2000);
+  
   // Adiciona o evento de mouseenter no botão de reset
   resetBox.addEventListener("mouseenter", ()=>{
     resetBox.setAttribute("visible", "false");
@@ -507,17 +517,17 @@ function showScore(){
   });
   
   const scoreBackground = document.createElement("a-plane");
-  scoreBackground.setAttribute("color", "#555");
+  scoreBackground.setAttribute("color", "#222");
   scoreBackground.setAttribute("width", "4.9");
   scoreBackground.setAttribute("height", "4.9");
   scoreBackground.setAttribute("position", "0 0 0.5");
   
-  const contorno = document.createElement("a-image");
-  contorno.setAttribute("src", "https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/contorno_blackboard.png?v=1729883206523");
-  contorno.setAttribute("width", "5");
-  contorno.setAttribute("height", "5");
-  contorno.setAttribute("position", " 0 0 0.1");
-  scoreBackground.appendChild(contorno);
+  // const contorno = document.createElement("a-image");
+  // contorno.setAttribute("src", "https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/contorno_blackboard.png?v=1729883206523");
+  // contorno.setAttribute("width", "5");
+  // contorno.setAttribute("height", "5");
+  // contorno.setAttribute("position", " 0 0 0.1");
+  // scoreBackground.appendChild(contorno);
   
   const scoreContainer = document.createElement("a-entity");
   scoreContainer.setAttribute("position", "-2 0 -0.5");
@@ -529,27 +539,27 @@ function showScore(){
   titleScore.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json");
   titleScore.setAttribute("value", "Score");
   titleScore.setAttribute("scale", "7 7 1");
-  titleScore.setAttribute("position", "0 0.7 1");
+  titleScore.setAttribute("position", "-0.1 0.7 1");
   titleScore.setAttribute("color", "#e8ac2c");
   
   const acertos = document.createElement("a-text");
   acertos.setAttribute("value", `Acertos: ${hits}`);
-  acertos.setAttribute("position", "0 0 1");
-  acertos.setAttribute("scale", "3 3 1");
+  acertos.setAttribute("position", "0 -0.6 1");
+  acertos.setAttribute("scale", "2.5 2.5 1");
   acertos.setAttribute("shader", "msdf");
   acertos.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const erros = document.createElement("a-text");
   erros.setAttribute("value", `Erros: ${errors}`);
-  erros.setAttribute("position", "0 -1 1");
-  erros.setAttribute("scale", "3 3 1");
+  erros.setAttribute("position", "0 0 1");
+  erros.setAttribute("scale", "2.5 2.5 1");
   erros.setAttribute("shader", "msdf");
   erros.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
   const tempoJogo = document.createElement("a-text");
   tempoJogo.setAttribute("value", `Tempo: ${tempo + 1}`);
-  tempoJogo.setAttribute("position", "0 -2 1");
-  tempoJogo.setAttribute("scale", "3 3 1");
+  tempoJogo.setAttribute("position", "0 -1.2 1");
+  tempoJogo.setAttribute("scale", "2.5 2.5 1");
   tempoJogo.setAttribute("shader", "msdf");
   tempoJogo.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Medium.json");
   
