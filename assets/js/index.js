@@ -72,27 +72,26 @@ const cardsDefinitions = [
 // Eventos para os elementos da tela inicial
 window.addEventListener("load", ()=>{
   // Animação das Estrelas
-    setInterval(() => {
-    for (let i = 0; i < 3; i++) {
+  setInterval(() => {
+    for (let i = 0; i < 4; i++) {
       setTimeout(() => {
         let star = document.createElement("a-image");
-        star.setAttribute("class", "star");
         star.setAttribute("src", "https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/star.png?v=1729943176633");
         star.setAttribute("width", "3");
         star.setAttribute("height", "1.5");
-        star.setAttribute("rotation", "0 70 0");
-        star.setAttribute("position", `-10 ${10 + i * 2} 17`);
+        star.setAttribute("rotation", "0 70 -5");
+        star.setAttribute("position", `-10 ${10 + i * 2} 18`);
         cena.appendChild(star);
 
         star.setAttribute("animation", {
           property: "position",
           to: "-5 3 -14",
-          dur: 800
+          dur: 700
         });
 
         setTimeout(() => {
           star.remove();
-        }, 1000);
+        }, 800);
       }, i * 400);
     }
   }, 10000);
@@ -167,6 +166,9 @@ function resetGame(){
       to: "#333",
       dur: 300
     });
+    
+    boxTime.setAttribute("color", "#d40202");
+    gameTime.setAttribute("color", "#eee");
     
     // Atraso para que a animação de mudança de cor termine
     setTimeout(()=>{
@@ -341,6 +343,11 @@ function addEventoMouse(){
         });
 
         if(!cardBefore){
+          if(!intervalTempo){
+            iniciaTempo();
+            boxTime.setAttribute("color", "#d40202");
+            gameTime.setAttribute("color", "#eee");
+          }
           cardBefore = item;
           cardBefore.setAttribute("color", "tomato");
           cardBefore.classList.remove("raycastable");
@@ -350,6 +357,7 @@ function addEventoMouse(){
           item.classList.remove("raycastable");
           item.setAttribute("color", "#73fc03");
           cardBefore.setAttribute("color", "#73fc03");
+          pararTempo();
           cardBefore = null;
           hits++;
           writeBlackboard(item);
@@ -371,6 +379,14 @@ function addEventoMouse(){
       clearTimeout(timeoutId);
     });
   });
+}
+
+function pararTempo(){
+  clearInterval(intervalTempo);
+  intervalTempo = undefined;
+  
+  boxTime.setAttribute("color", "#f5f5f5");
+  gameTime.setAttribute("color", "#d40202");
 }
 
 function iniciaTempo(){
