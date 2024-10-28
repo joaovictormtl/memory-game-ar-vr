@@ -1,3 +1,4 @@
+const cena = document.querySelector("#cena");
 const gameContainer = document.querySelector("#game-container");
 const initialInterface = document.querySelector("a-plane#initialInterface");
 const title = document.querySelector("a-text#title");
@@ -13,7 +14,6 @@ let tempo;
 let cardBefore = null;
 let hits = 0;
 let errors = 0;
-const star = document.querySelector("a-image#star")
 
 // Todos as informações para preencher a blackboard conforme o card específico
 const cardsDefinitions = [
@@ -71,14 +71,31 @@ const cardsDefinitions = [
 
 // Eventos para os elementos da tela inicial
 window.addEventListener("load", ()=>{
-  // Animação da Estrela
-  setTimeout(()=>{
-    star.setAttribute("animation", {
-      property: "position",
-      to: "-2 3 -12",
-      dur: 1000
-    });
-  }, 2000);
+  // Animação das Estrelas
+    setInterval(() => {
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        let star = document.createElement("a-image");
+        star.setAttribute("class", "star");
+        star.setAttribute("src", "https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/star.png?v=1729943176633");
+        star.setAttribute("width", "3");
+        star.setAttribute("height", "1.5");
+        star.setAttribute("rotation", "0 70 0");
+        star.setAttribute("position", `-10 ${10 + i * 2} 17`);
+        cena.appendChild(star);
+
+        star.setAttribute("animation", {
+          property: "position",
+          to: "-5 3 -14",
+          dur: 800
+        });
+
+        setTimeout(() => {
+          star.remove();
+        }, 1000);
+      }, i * 400);
+    }
+  }, 10000);
   
   // Adiciona o evento de mouseenter no botão de reset
   resetBox.addEventListener("mouseenter", ()=>{
