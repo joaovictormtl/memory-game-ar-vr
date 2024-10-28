@@ -20,26 +20,45 @@
       
       <a-sky src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/dd92f1a6-9295-49c2-8785-ab0a05248635.image.png?v=1729545069879"></a-sky>
       
-      <a-light type="ambient" color="#ffffff" intensity="1"></a-light>
+      <a-light type="ambient" color="#ffffff" intensity="0.8"></a-light>
       
       <!-- Sol -->
-      <a-sphere position="-10 6 -8.5" radius="0.3" color="#ffda8c" 
-          light="type: point; intensity: 5; distance: 20; decay: 2; color: #ffdda1">
+      <a-sphere id="sol" position="-10 6 -8.5" radius="0.5" material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/textura_sol.png?v=1730137853888" 
+          light="type: point; intensity: 5; distance: 25; decay: 2; color: #ffdda1">
       </a-sphere>
       
       <!-- Luz Solar -->
-      <a-plane position="-10.1 6.1 -8.6" rotation="0 40 0" width="5" height="5" 
+      <a-plane position="-10.1 6.1 -8.6" rotation="0 40 0" width="6" height="6" 
            material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/luz_sol.png?v=1729880844284; transparent: true; opacity: 0.5;">
       </a-plane>
       
-      <a-sphere position="10 6 -8.5" radius="0.3" color="#F08CFF" rotation=" 0 20 0" 
-          light="type: point; intensity: 5; distance: 20; decay: 2; color: #f08cff">
+      <!-- Magenta -->
+      <a-sphere id="magenta" position="10 4 -8.5" radius="1.2" material= "src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/textura_magenta.png?v=1730136303280; repeat: 1 2;" rotation=" 0 -60 0" 
+          light="type: point; intensity: 5; distance: 25; decay: 2; color: #f08cff">
       </a-sphere>
       
-      <a-plane position="10.1 6.1 -8.6" rotation="20 -20 0" width="5" height="5" 
+      <!-- Luz Magenta -->
+      <a-plane position="10.1 4.1 -8.6" rotation="20 -20 0" width="12" height="12" 
            material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/luz_magenta.png?v=1729882585781; transparent: true; opacity: 0.5;">
       </a-plane>
       
+      <!-- Planeta Azul -->
+      <a-sphere id="planet" position="-10 6 0" radius="0.9" material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/textura_azul.png?v=1730137319354; repeat: 2 2;" 
+          light="type: point; intensity: 5; distance: 15; decay: 2; color: #6ed3f5">
+      </a-sphere>
+      
+      <!-- Luz Azul -->
+      <a-plane position="-12 7 0" rotation="40 40 0" width="10" height="10" 
+           material="src: https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/assets%2Fazul.png?v=1729986573592; transparent: true; opacity: 1;">
+      </a-plane>
+      
+      <a-image
+        src="https://cdn.glitch.global/b8e6cfee-0fbc-4586-942b-51faad925aa4/textura_areola.png?v=1730137441073"
+        position=" -10 6 0"
+        width="6"
+        height="7"
+        rotation="0 20 0">
+      </a-image>
 
       <a-plane
         id="initialInterface"
